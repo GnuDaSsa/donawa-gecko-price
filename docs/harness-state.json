@@ -1,13 +1,13 @@
 {
-  "currentGoal": "홈 모프·형질 카드의 대표 이미지를 최저가 매물이 아니라 해당 가격 풀의 중앙 가격대 이미지로 바꾸고 중복 매물 이미지를 제거한다.",
+  "currentGoal": "모프·키워드 상세 페이지 히어로 이미지를 홈 카드에서 선택한 동일한 중간 가격대 대표 이미지와 일치시킨다.",
   "status": "complete",
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "향후 가격 풀이 갱신되면 홈 대표 이미지의 중앙값 근접성과 고유 이미지 선택을 같은 브라우저 점검으로 재확인한다.",
-  "lastUpdated": "2026-08-14T00:38:00+09:00",
+  "nextStep": "향후 대표 이미지 선택 규칙을 바꿀 때 홈 카드와 모프·키워드 상세 히어로 URL 일치 검증을 함께 유지한다.",
+  "lastUpdated": "2026-08-14T07:58:00+09:00",
   "verification": {
-    "lastCommand": "npm run test && npm run lint && npm run build; Playwright CLI local/production home-card lazy-image QA; Vercel get_deployment/get_runtime_errors",
+    "lastCommand": "npm run test && npm run lint && npm run build; Playwright CLI local home-to-detail image URL QA",
     "lastResult": "pass",
-    "notes": "16개 테스트 파일 105개 테스트, ESLint, Next.js 16.3 프로덕션 빌드가 PASS했다. localhost와 canonical Vercel 홈에서 39개 카드를 모두 순차 스크롤해 lazy image 39/39 로드, 실패 0, 이미지 src 중복 0, 중간 가격대 매물 이미지 38개와 고유 매물 사진이 없는 모자이크의 curated fallback 1개, 가로 넘침 없음을 확인했다. 증거는 output/playwright/home-mid-market-images-{all-loaded,production}.png에 있다. 배포 dpl_27aLLe9FdvFqg7GqsoYJqMoSwZRn은 READY, canonical alias 연결 완료, 최근 30분 런타임 오류 0건이다."
+    "notes": "16개 테스트 파일 105개 테스트, ESLint, Next.js 16.3 프로덕션 빌드가 PASS했다. 실제 localhost에서 홈 헷 아잔틱 카드와 `/trait/het-axanthic` 히어로가 동일한 MyBreeders 이미지 URL을 사용하고 0 console errors·가로 넘침 없음임을 확인했다. `/morph/lilly-white`도 홈과 상세 URL이 완전히 일치하고 이미지 로드에 성공했다. 증거는 output/playwright/detail-hero-matches-home-het-axanthic.png에 있다."
   }
 }

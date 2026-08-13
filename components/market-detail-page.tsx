@@ -1,9 +1,9 @@
 import { ChevronLeft, CircleCheck, Sparkles } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { AllListings } from "@/components/all-listings";
 import { ComparisonOverview } from "@/components/comparison-overview";
+import { DetailHeroImage } from "@/components/detail-hero-image";
 import { MorphListings } from "@/components/morph-listings";
 import { PriceDistribution } from "@/components/price-distribution";
 import { SiteHeader } from "@/components/site-header";
@@ -14,10 +14,12 @@ export function MarketDetailPage({
   subject,
   comparisons,
   pricePool,
+  representativeImageUrl,
 }: {
   subject: Morph;
   comparisons: PlatformComparison[];
   pricePool: Listing[];
+  representativeImageUrl?: string;
 }) {
   const availableComparisons = getAvailableComparisonListings(comparisons);
 
@@ -28,13 +30,10 @@ export function MarketDetailPage({
       <div className="detail-content page-shell">
         <section className="detail-hero" aria-labelledby="morph-title">
           <div className="detail-hero__image" aria-hidden="true">
-            <Image
-              src={subject.representativeImage}
-              alt=""
-              fill
-              loading="eager"
-              sizes="(max-width: 820px) 100vw, 48vw"
-              style={{ objectPosition: subject.imagePosition }}
+            <DetailHeroImage
+              representativeImageUrl={representativeImageUrl}
+              fallbackImageUrl={subject.representativeImage}
+              fallbackImagePosition={subject.imagePosition}
             />
           </div>
           <div className="detail-hero__shade" />

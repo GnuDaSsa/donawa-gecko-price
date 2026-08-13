@@ -6,6 +6,7 @@ import { MarketDetailPage } from "@/components/market-detail-page";
 import { buildTraitSubject, resolveTraitSlug } from "@/lib/data/catalog-traits";
 import {
   getComparableListingsByTraitSlug,
+  getHomeMarketSnapshot,
   getMorphById,
   getPlatformComparisonsByTraitSlug,
   getTraitBySlug,
@@ -33,21 +34,26 @@ export default async function TraitPage({ params }: Props) {
 
   if (!trait) notFound();
 
-  const [comparisons, listings] = await Promise.all([
+  const [comparisons, listings, homeSnapshot] = await Promise.all([
     getPlatformComparisonsByTraitSlug(traitSlug),
     getComparableListingsByTraitSlug(traitSlug),
+    getHomeMarketSnapshot(),
   ]);
   const pricePool = listings.filter((listing) => listing.platform.isActive);
   const fallbackMorph = pricePool[0]?.morphId
     ? await getMorphById(pricePool[0].morphId)
     : undefined;
   const subject = buildTraitSubject(trait, fallbackMorph?.representativeImage);
+  const homeSummary = homeSnapshot.morphs.find(
+    ({ href }) => href === `/trait/${trait.slug}`,
+  );
 
   return (
     <MarketDetailPage
       subject={subject}
       comparisons={comparisons}
       pricePool={pricePool}
+      representativeImageUrl={homeSummary?.representativeListingImageUrl}
     />
   );
 }

@@ -5,6 +5,7 @@ import { connection } from "next/server";
 import { MarketDetailPage } from "@/components/market-detail-page";
 import {
   getComparableListings,
+  getHomeMarketSnapshot,
   getMorphBySlug,
   getPlatformComparisons,
 } from "@/lib/data/repository";
@@ -30,17 +31,22 @@ export default async function MorphPage({ params }: Props) {
 
   if (!morph) notFound();
 
-  const [comparisons, listings] = await Promise.all([
+  const [comparisons, listings, homeSnapshot] = await Promise.all([
     getPlatformComparisons(morph.id),
     getComparableListings(morph.id),
+    getHomeMarketSnapshot(),
   ]);
   const pricePool = listings.filter((listing) => listing.platform.isActive);
+  const homeSummary = homeSnapshot.morphs.find(
+    ({ href }) => href === `/morph/${morph.slug}`,
+  );
 
   return (
     <MarketDetailPage
       subject={morph}
       comparisons={comparisons}
       pricePool={pricePool}
+      representativeImageUrl={homeSummary?.representativeListingImageUrl}
     />
   );
 }
