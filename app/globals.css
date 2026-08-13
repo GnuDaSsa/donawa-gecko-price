@@ -874,27 +874,52 @@ html.brand-intro-open {
 
 .expo-carousel__dots {
   position: absolute;
-  right: 18px;
-  bottom: 18px;
+  left: 50%;
+  bottom: 12px;
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
+  padding: 3px 5px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  background: rgb(8 13 9 / 52%);
+  box-shadow: 0 5px 16px rgb(0 0 0 / 20%);
+  backdrop-filter: blur(8px);
+  transform: translateX(-50%);
 }
 
 .expo-carousel__dots button {
-  width: 7px;
-  height: 7px;
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: rgb(255 255 255 / 48%);
+  place-items: center;
+  background: transparent;
   cursor: pointer;
-  transition: width 180ms ease, background 180ms ease;
 }
 
-.expo-carousel__dots button.is-active {
-  width: 20px;
+.expo-carousel__dots button span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 58%);
+  transition: width 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.expo-carousel__dots button.is-active span {
+  width: 22px;
+  background: var(--orange);
+}
+
+.expo-carousel__dots button:hover span {
+  background: var(--white);
+  transform: scale(1.12);
+}
+
+.expo-carousel__dots button.is-active:hover span {
   background: var(--orange);
 }
 
@@ -2933,8 +2958,8 @@ html.brand-intro-open {
   }
 
   .expo-carousel__dots {
-    right: 15px;
-    bottom: 15px;
+    right: auto;
+    bottom: 10px;
   }
 
   .home-feature-row + .morph-section {

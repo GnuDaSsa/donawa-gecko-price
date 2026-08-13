@@ -94,6 +94,7 @@ export function HomeFeatureShowcase({
             {upcomingEvents.map((event, index) => (
               <a
                 key={event.id}
+                id={`expo-slide-${event.id}`}
                 className="expo-carousel__slide"
                 href={event.href}
                 target="_blank"
@@ -130,9 +131,13 @@ export function HomeFeatureShowcase({
                   type="button"
                   className={index === displayedIndex ? "is-active" : undefined}
                   aria-label={`${event.title} 보기`}
-                  aria-current={index === displayedIndex ? "true" : undefined}
+                  aria-controls={`expo-slide-${event.id}`}
+                  aria-pressed={index === displayedIndex}
+                  title={`${index + 1}번째 박람회 보기`}
                   onClick={() => setActiveIndex(index)}
-                />
+                >
+                  <span aria-hidden="true" />
+                </button>
               ))}
             </div>
           )}
