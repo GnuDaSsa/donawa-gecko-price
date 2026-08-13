@@ -4,10 +4,10 @@
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
   "nextStep": "박람회 배너 점 선택과 자동 전환을 유지하면서 새 행사만 공식 원문 검증 후 추가한다.",
-  "lastUpdated": "2026-08-14T00:10:00+09:00",
+  "lastUpdated": "2026-08-14T00:14:00+09:00",
   "verification": {
-    "lastCommand": "npm run test && npm run lint && npm run build; system Chrome Playwright dot-control desktop/mobile QA",
+    "lastCommand": "npm run test && npm run lint && npm run build; system Chrome Playwright dot-control desktop/mobile QA; Vercel production deploy/get_deployment/get_runtime_errors",
     "lastResult": "pass",
-    "notes": "16개 테스트 파일 104개 테스트, ESLint, Next.js 16.3 빌드가 PASS했다. 실제 Chrome에서 하단 점 4개의 28x28 클릭 영역, 3번째 점 클릭 후 track -1290px 이동과 aria-pressed 갱신, 모바일 2번째 점 이동 및 가로 넘침 없음까지 확인했다. 증거는 output/playwright/home-expo-dot-controls-{desktop,mobile}.png에 있다."
+    "notes": "16개 테스트 파일 104개 테스트, ESLint, Next.js 16.3 빌드가 PASS했다. 실제 Chrome에서 하단 점 4개의 28x28 클릭 영역, 3번째 점 클릭 후 track -1290px 이동과 aria-pressed 갱신, 모바일 2번째 점 이동 및 가로 넘침 없음까지 확인했다. 증거는 output/playwright/home-expo-dot-controls-{desktop,mobile}.png에 있다. 커밋 d0ab600을 배포한 dpl_Eu2W2ZpY7XMAvqeYukytH3hYYmpW가 READY이고 canonical alias 연결 및 최근 30분 런타임 오류 0건을 확인했다."
   }
 }
