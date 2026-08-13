@@ -1,0 +1,218 @@
+{
+  "generatedAt": "2026-08-09T02:58:07.535Z",
+  "board": {
+    "cafeId": "12440585",
+    "menuId": "1704",
+    "pages": 1,
+    "articleCount": 20
+  },
+  "counts": {
+    "ready": 93,
+    "needsReview": 9,
+    "failedArticles": 0
+  },
+  "articles": [
+    {
+      "articleId": "5609792",
+      "title": "쿼드 핀트라이 숫",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "NO_EXPLICIT_ITEM_PRICE"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609785",
+      "title": "대구) 고퀄 트라이 암 분양합니다.",
+      "readyCount": 1,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609779",
+      "title": "예쁜 아잔틱 베이비 저렴 분양합니다",
+      "readyCount": 1,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609776",
+      "title": "레드릴리 암컷",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "NO_EXPLICIT_ITEM_PRICE"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609772",
+      "title": "세이블 헷100 분양합니다",
+      "readyCount": 1,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609768",
+      "title": "차콜 숫 성체 분양합니다 사육장 포함",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "NO_EXPLICIT_ITEM_PRICE"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609767",
+      "title": "귀여운 트라이 자글자글 할리퀸😎 저렴분양",
+      "readyCount": 1,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609766",
+      "title": "병점,화성 🍯꿀분양🍯🔽가격다운🔽 저렴하게 데려가세요^^ 아잔틱 100헷 릴리세이블 세이블 릴리화이트 트라이 암컷♀️, 미구분 분양합니다",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "AMBIGUOUS_ARTICLE_LEVEL_PRICE"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609763",
+      "title": "노멀 쿼드 수컷 분양합니다!!",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "NO_EXPLICIT_ITEM_PRICE"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609758",
+      "title": "[애니밀리] 이런 패턴 좋아하시는 분 계실까요? 크레스티드게코 분양",
+      "readyCount": 2,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609749",
+      "title": "(의정부/남양주) 메인급 아이들 할인 분양 합니다!!",
+      "readyCount": 19,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609748",
+      "title": "서울강서) 노멀 세이블 릴리 달마 레드 미구분 암수 분양",
+      "readyCount": 15,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609737",
+      "title": "50헷초초 암 성체,50헷릴리초초 숫 아성체,차콜 숫 준성체 일괄 10만원에 보냅니다",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "ARTICLE_BUNDLE_ONLY"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609733",
+      "title": "베이비 1만원 분양합니다 (무분 포함)",
+      "readyCount": 2,
+      "reviewCount": 0,
+      "excludedCount": 2,
+      "reviewReasons": [],
+      "excludedReasons": [
+        "FREE_OFFER_OUTSIDE_PRICE_COMPARISON"
+      ]
+    },
+    {
+      "articleId": "5609726",
+      "title": "트익할,차콜,릴리 분양해요!",
+      "readyCount": 3,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609725",
+      "title": "용인 수지 크레 트익할, 아잔틱, 슈달, 릴리 암컷 성체 등 분양합니다(수컷 아성체 추가)",
+      "readyCount": 16,
+      "reviewCount": 2,
+      "excludedCount": 1,
+      "reviewReasons": [
+        "NON_ACTIVE_UNKNOWN",
+        "PRICE_UNIT_INFERRED"
+      ],
+      "excludedReasons": [
+        "FREE_OFFER_OUTSIDE_PRICE_COMPARISON"
+      ]
+    },
+    {
+      "articleId": "5609722",
+      "title": "파격분양 릴잔(숫), 아잔 미구분 일괄로 15에 분양합니다.",
+      "readyCount": 0,
+      "reviewCount": 1,
+      "excludedCount": 0,
+      "reviewReasons": [
+        "BUNDLE_PRICE_UNIT_INFERRED"
+      ],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609709",
+      "title": "최저금액 | 크레 암컷17 수컷10마리 급분양 | 렉사가능 | 개별가능 | 일괄 140만 | 아잔틱메이팅O | 카드가능",
+      "readyCount": 26,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609708",
+      "title": "충주 노멀 세이블 분양",
+      "readyCount": 5,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    },
+    {
+      "articleId": "5609704",
+      "title": "크레 2년 된 수컷 분양합니다~",
+      "readyCount": 1,
+      "reviewCount": 0,
+      "excludedCount": 0,
+      "reviewReasons": [],
+      "excludedReasons": []
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "paths": {
+    "stateFile": "docs/harness-state.json",
+    "memoryFile": "docs/project-memory.md",
+    "decisionsFile": "docs/decisions.md",
+    "contractsDir": "docs/contracts"
+  },
+  "commands": {
+    "verifyQuick": "npm run test && npm run lint",
+    "verifyFull": "npm run test && npm run lint && npm run build",
+    "docsGenerate": ""
+  },
+  "rules": {
+    "maxRepeatedFailures": 2
+  }
+}

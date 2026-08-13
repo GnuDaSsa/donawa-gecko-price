@@ -1,0 +1,59 @@
+insert into public.platforms (name, homepage_url, collector_type, is_active)
+values
+  (
+    '뉴런쥬라기',
+    'https://thejurassic.co.kr/category/%ED%81%AC%EB%A0%88%EC%8A%A4%ED%8B%B0%EB%93%9C-%EA%B2%8C%EC%BD%94/132/',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '뉴런내추럴',
+    'https://newrunnatural.co.kr/category/%EB%8F%84%EB%A7%88%EB%B1%80/48/',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '더사파리',
+    'https://thesafari.kr/product/list.html?cate_no=160',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '뉴런렙박스',
+    'https://thereptile.co.kr/category/%ED%81%AC%EB%A0%88%EC%8A%A4%ED%8B%B0%EB%93%9C%EA%B2%8C%EC%BD%94/143/',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '더브리더스',
+    'https://thebreeders.cafe24.com/category/%ED%81%AC%EB%A0%88%EC%8A%A4%ED%8B%B0%EB%93%9C%EA%B2%8C%EC%BD%94/72/',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '더베스트팜',
+    'https://www.thebestfarm.kr/product/list.html?cate_no=25',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '뉴런와일드',
+    'https://newrunwild.co.kr/category/%EA%B2%8C%EC%BD%94%EB%B6%99%EC%9D%B4%EB%A5%98/80/',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '프랜쥬',
+    'https://frienzoo.com/category/%ED%8C%8C%EC%B6%A9%EB%A5%98/256/',
+    'AUTO_WEB',
+    false
+  ),
+  (
+    '주세요닷컴',
+    'https://www.zooseyo.com/sale/sale_list.php?cate1=%C6%C4%C3%E6%2F%BE%E7%BC%AD%B7%F9&cate2=%B5%B5%B8%B6%B9%EC%28%B0%D4%C4%DA%29&cate3=%C5%A9%B7%B9%BD%BA%C6%BC%B5%E5%20%B0%D4%C4%DA&tabs=1',
+    'AUTO_WEB',
+    false
+  )
+on conflict (name) do update set
+  homepage_url = excluded.homepage_url,
+  collector_type = excluded.collector_type;

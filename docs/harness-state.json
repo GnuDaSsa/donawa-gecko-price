@@ -1,0 +1,13 @@
+{
+  "currentGoal": "현재 도나와 MVP 전체를 비밀정보 없이 새 비공개 GitHub 저장소에 최초 커밋하고 푸시한다.",
+  "status": "in_progress",
+  "currentContract": "docs/contracts/production-mvp.md",
+  "blockers": [],
+  "nextStep": "커밋 대상과 비밀정보를 감사한 뒤 GnuDaSsa/donawa-gecko-price 비공개 저장소를 만들고 main을 푸시한다.",
+  "lastUpdated": "2026-08-13T22:50:00+09:00",
+  "verification": {
+    "lastCommand": "npm run test && npm run lint && npm run build; local HTTP valid/404 route-render verification; npx --yes vercel@latest deploy --prod --yes",
+    "lastResult": "pass",
+    "notes": "15개 테스트 파일 100개 테스트, ESLint, Next.js 16.3 build가 PASS했다. 로컬 HTTP에서 `/` 200/back 0, `/nearby` 200/back 1, `/nearby**` 404/back 1을 확인했다. Vercel deployment dpl_AJYVSQKfH4Kub6afZSDC3kzjQMeN가 READY/production으로 완료되어 canonical https://donawa-gecko-price.vercel.app 에 alias됐다. 인앱 브라우저는 webview attach timeout으로 자동 탭 열기에 실패했다."
+  }
+}

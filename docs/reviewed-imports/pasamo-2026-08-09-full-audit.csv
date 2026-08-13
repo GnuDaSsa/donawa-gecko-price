@@ -1,0 +1,47 @@
+platform,title,url,price,price_type,status,morph,traits,sex,weight_g,image_url,classification_mode,status_evidence
+파사모,B5 화이트스팟 노멀 암컷 20g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#b5-white-spot-normal,50000,FIXED,ACTIVE,,,FEMALE,20,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,B1 화이트스팟 노멀 암컷 25g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#b1-white-spot-normal,30000,FIXED,ACTIVE,,,FEMALE,25,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,B4 노멀 수컷 20g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#b4-normal,30000,FIXED,ACTIVE,,,MALE,20,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,D7 핀쿼드 노멀 미구분 2g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#d7-normal,50000,FIXED,ACTIVE,,,UNKNOWN,2,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,C7 릴리화이트 미구분 2g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#c7-lilly,30000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,2,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,A·B 베이비 부 노멀 수컷 49g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#ab-father-normal,50000,FIXED,ACTIVE,,,MALE,49,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,C·D 베이비 부 핀트라이 쿼드 노멀 수컷 44g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608043#cd-father-pin-tricolor-normal,20000,FIXED,ACTIVE,,트라이컬러,MALE,44,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,100헷초초 숫추 9g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608044#het-choco-9g-male,350000,FIXED,ACTIVE,,,UNKNOWN,9,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,100헷초초 릴리화이트 미구분 3g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608044#lilly-het-choco-3g,200000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,3,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,할인분양 릴리화이트 수컷 준성체 24.6g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608060#lilly-male-24-6g,50000,FIXED,ACTIVE,릴리화이트,,MALE,24.6,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,차콜 100헷 아잔틱 2g 1번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608412#charcoal-het-axanthic-1,50000,FIXED,ACTIVE,,,UNKNOWN,2,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,다크 릴리화이트 100헷 아잔틱 2g 2번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608412#dark-lilly-het-axanthic-1,20000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,2,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,다크 릴리화이트 100헷 아잔틱 2g 3번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608412#dark-lilly-het-axanthic-2,20000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,2,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,다크 릴리화이트 100헷 아잔틱 2g 4번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608412#dark-lilly-het-axanthic-3,20000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,2,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,1번 미구분 12~13g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#item-1-unclassified,50000,FIXED,ACTIVE,,,UNKNOWN,12.5,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,2번 릴리화이트 미구분 13~14g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#lilly-unsexed-13-14g,120000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,13.5,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,3번 트익할 미구분 23~24g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#triex-harlequin-3,150000,FIXED,ACTIVE,할리퀸,트라이컬러|익스트림,UNKNOWN,23.5,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,4번 트익할 미구분,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#triex-harlequin-4,150000,FIXED,ACTIVE,할리퀸,트라이컬러|익스트림,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,5번 달마시안 미구분 23~25g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#dalmatian-5,150000,FIXED,ACTIVE,달마시안,,UNKNOWN,24,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,6번 노멀 미구분 28g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#normal-6,80000,FIXED,ACTIVE,,,UNKNOWN,28,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,7번 릴리화이트 암컷 45g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608434#lilly-female-45g,100000,FIXED,ACTIVE,릴리화이트,,FEMALE,45,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,솔리드 릴리 베이비 1번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608467#lilly-baby-1,15000,FIXED,ACTIVE,릴리화이트,솔리드백,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,솔리드 릴리 베이비 2번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608467#lilly-baby-2,20000,FIXED,ACTIVE,릴리화이트,솔리드백,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,솔리드 릴리 베이비 3번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608467#lilly-baby-3,20000,FIXED,ACTIVE,릴리화이트,솔리드백,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,4번 헷100릴리 표기 베이비,https://cafe.naver.com/f-e/cafes/12440585/articles/5608467#lilly-baby-4,20000,FIXED,ACTIVE,,,UNKNOWN,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,1번 릴리세이블 미구분,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#item-1-lilly-sable,50000,FIXED,ACTIVE,릴리화이트,,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,2번 세이블 미구분,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#item-2-sable,40000,FIXED,ACTIVE,세이블,,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,3번 솔리드 릴리화이트 미구분,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#item-3-solid-lilly,50000,FIXED,ACTIVE,릴리화이트,솔리드백,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,4번 트익할 암컷 10.4g,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#item-4-triex-harlequin,80000,FIXED,ACTIVE,할리퀸,트라이컬러|익스트림,FEMALE,10.4,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,5번 릴리화이트 암컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#lilly-female-adult,150000,FIXED,ACTIVE,릴리화이트,,FEMALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,6번 100헷 아잔틱 숫추,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#item-6-het-axanthic,50000,FIXED,ACTIVE,,,UNKNOWN,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,7번 아잔틱 숫추,https://cafe.naver.com/f-e/cafes/12440585/articles/5608469#item-7-axanthic,130000,FIXED,ACTIVE,아잔틱,,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,순혈 차콜 암컷 성체 1번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#pure-charcoal-female-800k,800000,FIXED,ACTIVE,,,FEMALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,카푸헷100 수컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#cappuccino-het-male-350k,350000,FIXED,ACTIVE,카푸치노,,MALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,릴리헷100 수컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#lilly-het-male-400k,400000,FIXED,ACTIVE,릴리화이트,,MALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,순혈 차콜 암컷 성체 2번,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#pure-charcoal-female-100k,100000,FIXED,ACTIVE,,,FEMALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,알티차콜 암컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#rt-charcoal-female-50k,50000,FIXED,ACTIVE,,,FEMALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,세이블릴리 수컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#sable-lilly-male-adult,390000,FIXED,ACTIVE,릴리화이트,,MALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,노멀 암컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#normal-female-200k,200000,FIXED,ACTIVE,,,FEMALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION
+파사모,솔리드 레드릴리 수컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#solid-red-lilly-male-adult,50000,FIXED,ACTIVE,릴리화이트,솔리드백|레드,MALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,세이블 수컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#sable-male-contact,,CONTACT,ACTIVE,세이블,,MALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,세이블 암컷 성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608482#sable-female-50k,50000,FIXED,ACTIVE,세이블,,FEMALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,광폭도살 릴리화이트 점X 수컷 아성체,https://cafe.naver.com/f-e/cafes/12440585/articles/5608499#point-free-lilly-male,70000,FIXED,ACTIVE,릴리화이트,,MALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,레드 릴리화이트 암컷,https://cafe.naver.com/f-e/cafes/12440585/articles/5608527#red-lilly-female,100000,FIXED,ACTIVE,릴리화이트,레드,FEMALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,솔리드백 릴리화이트 암컷,https://cafe.naver.com/f-e/cafes/12440585/articles/5608527#solid-back-lilly-female,50000,FIXED,ACTIVE,릴리화이트,솔리드백,FEMALE,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION
+파사모,솔리드백급 릴잔틱 베이비,https://cafe.naver.com/f-e/cafes/12440585/articles/5608527#lilly-axanthic-baby,130000,FIXED,SOLD,릴잔틱,솔리드백,UNKNOWN,,,EXPLICIT,EXPLICIT_ITEM_SOLD

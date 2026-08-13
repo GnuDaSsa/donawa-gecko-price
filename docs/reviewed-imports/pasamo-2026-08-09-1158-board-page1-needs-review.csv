@@ -1,0 +1,10 @@
+platform,title,url,price,price_type,status,morph,traits,sex,weight_g,image_url,classification_mode,status_evidence,review_reason
+파사모,쿼드 핀트라이 숫,https://cafe.naver.com/f-e/cafes/12440585/articles/5609792#article-offer,,UNKNOWN,ACTIVE,,,MALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION,NO_EXPLICIT_ITEM_PRICE
+파사모,레드릴리 암컷,https://cafe.naver.com/f-e/cafes/12440585/articles/5609776#article-offer,,UNKNOWN,ACTIVE,,,FEMALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION,NO_EXPLICIT_ITEM_PRICE
+파사모,차콜 숫 성체 분양합니다 사육장 포함,https://cafe.naver.com/f-e/cafes/12440585/articles/5609768#article-offer,,UNKNOWN,ACTIVE,,,MALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION,NO_EXPLICIT_ITEM_PRICE
+파사모,"병점,화성 🍯꿀분양🍯🔽가격다운🔽 저렴하게 데려가세요^^ 아잔틱 100헷 릴리세이블 세이블 릴리화이트 트라이 암컷♀️, 미구분 분양합니다 🦎크레스티드게코🦎",https://cafe.naver.com/f-e/cafes/12440585/articles/5609766#item-1,50000,FIXED,ACTIVE,아잔틱,트라이컬러,UNKNOWN,,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION,AMBIGUOUS_ARTICLE_LEVEL_PRICE
+파사모,노멀 쿼드 수컷 분양합니다!!,https://cafe.naver.com/f-e/cafes/12440585/articles/5609763#article-offer,,UNKNOWN,ACTIVE,,,MALE,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION,NO_EXPLICIT_ITEM_PRICE
+파사모,"50헷초초 암 성체,50헷릴리초초 숫 아성체,차콜 숫 준성체 일괄 10만원에 보냅니다",https://cafe.naver.com/f-e/cafes/12440585/articles/5609737#bundle,100000,BUNDLE,ACTIVE,,,UNKNOWN,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION,ARTICLE_BUNDLE_ONLY
+파사모,수컷 솔리드급 릴잔틱 수컷 아성체 무게 : 9g,https://cafe.naver.com/f-e/cafes/12440585/articles/5609725#male-5,300000,FIXED,UNKNOWN,릴잔틱,,MALE,9,,EXPLICIT,EXPLICIT_RESERVATION,NON_ACTIVE_UNKNOWN
+파사모,수컷 스팟타입 트익할 수컷 아성체 무게 : 6g,https://cafe.naver.com/f-e/cafes/12440585/articles/5609725#male-8,250000,FIXED,ACTIVE,할리퀸,트라이컬러|익스트림,MALE,6,,EXPLICIT,VISIBLE_OFFER_NO_COMPLETION,PRICE_UNIT_INFERRED
+파사모,"파격분양 릴잔(숫), 아잔 미구분 일괄로 15에 분양합니다.",https://cafe.naver.com/f-e/cafes/12440585/articles/5609722#bundle,150000,BUNDLE,ACTIVE,,,UNKNOWN,,,UNCLASSIFIED,VISIBLE_OFFER_NO_COMPLETION,BUNDLE_PRICE_UNIT_INFERRED
