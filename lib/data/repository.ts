@@ -2,7 +2,7 @@ import { cache } from "react";
 
 import type { Database, Json } from "@/lib/database.types";
 import { buildTraitSubject } from "@/lib/data/catalog-traits";
-import { selectLowestHomeListing } from "@/lib/data/home-market";
+import { selectMidMarketHomeImage } from "@/lib/data/home-market";
 import { listings as mockListings } from "@/lib/data/listings";
 import { morphs as mockMorphs } from "@/lib/data/morphs";
 import { platforms as mockPlatforms } from "@/lib/data/platforms";
@@ -289,64 +289,83 @@ export const getHomeMarketSnapshot = cache(async (): Promise<HomeMarketSnapshot>
       ),
   );
   const platformIds = new Set(comparable.map((row) => row.platform!.id));
-
-  return {
-    morphs: [
-      ...morphs.map((morph) => {
+  const categoryPools = [
+    ...morphs.map((morph) => {
       const listings = comparable.filter((row) => row.morph_id === morph.id);
-      const lowestListing = selectLowestHomeListing(
-        listings.map((row) => ({
-          id: row.id,
-          currentPrice: row.current_price!,
-          imageUrl: row.image_url,
-          originalTitle: row.original_title,
-        })),
-      );
 
       return {
         morph,
+        trait: undefined as Trait | undefined,
         href: `/morph/${morph.slug}`,
-        listingCount: listings.length,
-        platformCount: new Set(listings.map((row) => row.platform!.id)).size,
-        minPrice: lowestListing?.currentPrice,
-        lowestListingImageUrl: lowestListing?.imageUrl?.trim() || undefined,
-        lowestListingTitle: lowestListing?.originalTitle,
+        listings,
       };
-      }),
-      ...keywordTraits.map((trait) => {
-        const listings = comparable.filter((row) =>
-          row.listing_traits.some(({ trait: listingTrait }) => listingTrait?.slug === trait.slug),
-        );
-        const lowestListing = selectLowestHomeListing(
-          listings.map((row) => ({
-            id: row.id,
-            currentPrice: row.current_price!,
-            imageUrl: row.image_url,
-            originalTitle: row.original_title,
-            morphId: row.morph_id,
-          })),
-        );
-        const fallbackMorph = morphs.find(({ id }) => id === lowestListing?.morphId);
-        const subject = buildTraitSubject(
-          trait,
-          fallbackMorph?.representativeImage,
-        );
+    }),
+    ...keywordTraits.map((trait) => {
+      const listings = comparable.filter((row) =>
+        row.listing_traits.some(
+          ({ trait: listingTrait }) => listingTrait?.slug === trait.slug,
+        ),
+      );
+      const fallbackMorph = morphs.find(({ id }) => id === listings[0]?.morph_id);
 
-        return {
-          morph: subject,
-          href: `/trait/${trait.slug}`,
-          listingCount: listings.length,
-          platformCount: new Set(listings.map((row) => row.platform!.id)).size,
-          minPrice: lowestListing?.currentPrice,
-          lowestListingImageUrl: lowestListing?.imageUrl?.trim() || undefined,
-          lowestListingTitle: lowestListing?.originalTitle,
-        };
-      }),
-    ].sort(
-      (a, b) =>
-        b.listingCount - a.listingCount ||
-        a.morph.nameKo.localeCompare(b.morph.nameKo, "ko"),
-    ),
+      return {
+        morph: buildTraitSubject(trait, fallbackMorph?.representativeImage),
+        trait,
+        href: `/trait/${trait.slug}`,
+        listings,
+      };
+    }),
+  ].sort(
+    (a, b) =>
+      b.listings.length - a.listings.length ||
+      a.morph.nameKo.localeCompare(b.morph.nameKo, "ko"),
+  );
+  const usedRepresentativeListingIds = new Set<string>();
+  const usedRepresentativeImageUrls = new Set<string>();
+  const summaries = categoryPools.map((pool) => {
+    const candidates = pool.listings.map((row) => ({
+      id: row.id,
+      currentPrice: row.current_price!,
+      imageUrl: row.image_url,
+      originalTitle: row.original_title,
+      morphId: row.morph_id,
+    }));
+    const representativeListing = selectMidMarketHomeImage(
+      candidates,
+      usedRepresentativeListingIds,
+      usedRepresentativeImageUrls,
+    );
+
+    if (representativeListing) {
+      usedRepresentativeListingIds.add(representativeListing.id);
+      usedRepresentativeImageUrls.add(representativeListing.imageUrl!.trim());
+    }
+
+    const representativeMorph = morphs.find(
+      ({ id }) => id === representativeListing?.morphId,
+    );
+    const morph = pool.trait
+      ? buildTraitSubject(pool.trait, representativeMorph?.representativeImage)
+      : pool.morph;
+    const minPrice = candidates.length
+      ? Math.min(...candidates.map(({ currentPrice }) => currentPrice))
+      : undefined;
+
+    return {
+      morph,
+      href: pool.href,
+      listingCount: pool.listings.length,
+      platformCount: new Set(pool.listings.map((row) => row.platform!.id)).size,
+      minPrice,
+      representativeListingImageUrl:
+        representativeListing?.imageUrl?.trim() || undefined,
+      representativeListingTitle: representativeListing?.originalTitle,
+      representativeListingPrice: representativeListing?.currentPrice,
+    };
+  });
+
+  return {
+    morphs: summaries,
     totalListings: comparable.length,
     platformCount: platformIds.size,
   };

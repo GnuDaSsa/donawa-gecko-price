@@ -17,11 +17,11 @@ export function MorphCard({
 }) {
   const { morph, listingCount, minPrice, platformCount } = summary;
   const [listingImageFailed, setListingImageFailed] = useState(false);
-  const listingImageUrl = summary.lowestListingImageUrl?.trim();
+  const listingImageUrl = summary.representativeListingImageUrl?.trim();
   const useListingImage = Boolean(listingImageUrl) && !listingImageFailed;
   const imageUrl = useListingImage ? listingImageUrl! : morph.representativeImage;
   const imageAlt = useListingImage
-    ? `${morph.nameKo} 최저가 매물 이미지${summary.lowestListingTitle ? ` · ${summary.lowestListingTitle}` : ""}`
+    ? `${morph.nameKo} 중간 가격대 매물 이미지${summary.representativeListingTitle ? ` · ${summary.representativeListingTitle}` : ""}`
     : `${morph.nameKo} 대표 크레스티드 게코`;
 
   return (

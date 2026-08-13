@@ -1,13 +1,13 @@
 {
-  "currentGoal": "홈 박람회 배너의 하단 점을 명확한 수동 페이지 선택 컨트롤로 개선한다.",
+  "currentGoal": "홈 모프·형질 카드의 대표 이미지를 최저가 매물이 아니라 해당 가격 풀의 중앙 가격대 이미지로 바꾸고 중복 매물 이미지를 제거한다.",
   "status": "complete",
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "박람회 배너 점 선택과 자동 전환을 유지하면서 새 행사만 공식 원문 검증 후 추가한다.",
-  "lastUpdated": "2026-08-14T00:14:00+09:00",
+  "nextStep": "향후 가격 풀이 갱신되면 홈 대표 이미지의 중앙값 근접성과 고유 이미지 선택을 같은 브라우저 점검으로 재확인한다.",
+  "lastUpdated": "2026-08-14T00:33:00+09:00",
   "verification": {
-    "lastCommand": "npm run test && npm run lint && npm run build; system Chrome Playwright dot-control desktop/mobile QA; Vercel production deploy/get_deployment/get_runtime_errors",
+    "lastCommand": "npm run test && npm run lint && npm run build; Playwright CLI actual-browser home-card lazy-image QA",
     "lastResult": "pass",
-    "notes": "16개 테스트 파일 104개 테스트, ESLint, Next.js 16.3 빌드가 PASS했다. 실제 Chrome에서 하단 점 4개의 28x28 클릭 영역, 3번째 점 클릭 후 track -1290px 이동과 aria-pressed 갱신, 모바일 2번째 점 이동 및 가로 넘침 없음까지 확인했다. 증거는 output/playwright/home-expo-dot-controls-{desktop,mobile}.png에 있다. 커밋 d0ab600을 배포한 dpl_Eu2W2ZpY7XMAvqeYukytH3hYYmpW가 READY이고 canonical alias 연결 및 최근 30분 런타임 오류 0건을 확인했다."
+    "notes": "16개 테스트 파일 105개 테스트, ESLint, Next.js 16.3 프로덕션 빌드가 PASS했다. 실제 localhost Supabase 홈에서 39개 카드를 모두 순차 스크롤해 lazy image 39/39 로드, 실패 0, 이미지 src 중복 0, 중간 가격대 매물 이미지 38개와 고유 매물 사진이 없는 모자이크의 curated fallback 1개, 가로 넘침 없음을 확인했다. 증거는 output/playwright/home-mid-market-images-all-loaded.png에 있다."
   }
 }

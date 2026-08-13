@@ -71,8 +71,9 @@ export interface MorphMarketSummary {
   listingCount: number;
   platformCount: number;
   minPrice?: number;
-  lowestListingImageUrl?: string;
-  lowestListingTitle?: string;
+  representativeListingImageUrl?: string;
+  representativeListingTitle?: string;
+  representativeListingPrice?: number;
 }
 
 export interface HomeMarketSnapshot {
