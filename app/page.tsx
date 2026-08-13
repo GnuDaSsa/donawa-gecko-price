@@ -1,10 +1,11 @@
-import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 
 import { BrandIntro } from "@/components/brand-intro";
+import { HomeFeatureShowcase } from "@/components/home-feature-showcase";
 import { MorphGrid } from "@/components/morph-grid";
 import { SiteHeader } from "@/components/site-header";
 import { getHomeMarketSnapshot } from "@/lib/data/repository";
+import { expoEvents, getKoreaDateKey } from "@/lib/expo-events";
 
 type Props = { searchParams: Promise<{ q?: string }> };
 
@@ -31,19 +32,10 @@ export default async function Home({ searchParams }: Props) {
       <SiteHeader query={query} />
 
       <div className="home-content page-shell">
-        <section className="home-nearby-feature" aria-labelledby="home-nearby-title">
-          <div className="home-nearby-feature__main">
-            <span className="home-nearby-feature__icon" aria-hidden="true">
-              <MapPin size={22} />
-            </span>
-            <div>
-              <h2 id="home-nearby-title">내 주변 판매처</h2>
-            </div>
-          </div>
-          <Link className="home-nearby-feature__cta" href="/nearby">
-            주변 매장 보기 <ArrowRight size={17} aria-hidden="true" />
-          </Link>
-        </section>
+        <HomeFeatureShowcase
+          events={expoEvents}
+          initialKoreaDate={getKoreaDateKey(new Date())}
+        />
 
         <section className="morph-section" id="morph-catalog" aria-labelledby="morph-heading">
           <div className="section-heading">

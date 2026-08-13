@@ -1,13 +1,13 @@
 {
-  "currentGoal": "현재 도나와 MVP 전체를 비밀정보 없이 새 비공개 GitHub 저장소에 최초 커밋하고 푸시한다.",
+  "currentGoal": "홈의 내 주변 판매처를 좌측 절반으로 줄이고 우측에 예정된 국내 파충류 박람회 자동 만료 배너 캐러셀을 추가한다.",
   "status": "complete",
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "후속 개발은 origin/main을 기준으로 작은 검증 커밋 단위로 진행한다.",
-  "lastUpdated": "2026-08-13T22:55:00+09:00",
+  "nextStep": "새 박람회를 추가할 때 공식 원문과 이미지 출처를 재검증하고 lib/expo-events.ts 및 public/expos/ATTRIBUTION.md를 갱신한다.",
+  "lastUpdated": "2026-08-13T23:42:00+09:00",
   "verification": {
-    "lastCommand": "git diff --cached --check; staged secret/contact/size audit; npm run test && npm run lint; gh repo create GnuDaSsa/donawa-gecko-price --private --source=. --remote=origin --push",
+    "lastCommand": "npm run test && npm run lint && npm run build; system Chrome Playwright desktop/mobile carousel QA",
     "lastResult": "pass",
-    "notes": "174개 파일 42,108줄을 초기 커밋 6a8470e로 저장했다. 실제 .env/.env.local/.env.collectors와 .vercel은 gitignore로 제외했고 staged secret scan은 실제 키를 찾지 않았다. 연락처 패턴은 마스킹 검증용 가짜 테스트 fixture와 package-lock 메타데이터뿐이었다. 15개 테스트 파일 100개 테스트와 ESLint가 PASS했다. 비공개 저장소 https://github.com/GnuDaSsa/donawa-gecko-price 를 생성했고 main이 origin/main을 추적한다."
+    "notes": "16개 테스트 파일 104개 테스트, ESLint, Next.js 16.3 프로덕션 빌드가 PASS했다. 실제 Chrome에서 데스크톱 647px/647px 균등 분할, 4개 행사 링크/이미지 로딩, 3초 후 왼쪽 이동, 모바일 366px 단일 열, 가로 넘침 없음까지 확인했다. 화면 증거는 gitignore된 output/playwright/home-expo-carousel-{desktop,mobile}.png에 있다."
   }
 }

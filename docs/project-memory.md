@@ -71,3 +71,11 @@
 - Which representative morph images are licensed/approved for production use?
 - Should the next private-MVP increment review the nine held page-1 rows, process bounded page 2, or add a browser admin surface over the generated ready/review CSVs first?
 - The Vercel review URL is live, but a custom domain, promotion, or broad public release still requires a separate permission, image-rights, domain, and release review.
+
+## Upcoming expo home surface — 2026-08-13
+- Home utility layout is a 1:1 desktop split: `내 주변 판매처` left, upcoming reptile/exotic-animal carousel right. At 900px and below it stacks into one column.
+- Event records live in `lib/expo-events.ts`; image mirrors and provenance live under `public/expos/`. An event source must be a public organizer, ticket seller, venue, or exhibition-directory page that exposes the event identity and dates. Social posts may discover a lead but do not independently establish the displayed dates or destination URL.
+- Expiration is based on the Asia/Seoul calendar date and is end-date inclusive: an event remains visible on its final day, then disappears at the next Korean midnight. Events sort by start date.
+- Autoplay moves left every 3,000 ms, pauses on pointer hover or keyboard focus, and is disabled for `prefers-reduced-motion`. Dots select an event directly; inactive external links leave the tab order.
+- Expo cards are informational navigation only. They never create `platforms`, `listings`, price evidence, verified shop locations, or claims about booth inventory.
+- As of 2026-08-13 the curated set is Suwon (2026-08-15–16), Busan (2026-08-22–23), Daejeon (2026-09-05–06), and Cheongju (2026-11-14–15). Recheck the original page before changing dates, venues, or destination links.
