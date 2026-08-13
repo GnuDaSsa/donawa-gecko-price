@@ -1,13 +1,13 @@
 {
   "currentGoal": "현재 도나와 MVP 전체를 비밀정보 없이 새 비공개 GitHub 저장소에 최초 커밋하고 푸시한다.",
-  "status": "in_progress",
+  "status": "complete",
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "커밋 대상과 비밀정보를 감사한 뒤 GnuDaSsa/donawa-gecko-price 비공개 저장소를 만들고 main을 푸시한다.",
-  "lastUpdated": "2026-08-13T22:50:00+09:00",
+  "nextStep": "후속 개발은 origin/main을 기준으로 작은 검증 커밋 단위로 진행한다.",
+  "lastUpdated": "2026-08-13T22:55:00+09:00",
   "verification": {
-    "lastCommand": "npm run test && npm run lint && npm run build; local HTTP valid/404 route-render verification; npx --yes vercel@latest deploy --prod --yes",
+    "lastCommand": "git diff --cached --check; staged secret/contact/size audit; npm run test && npm run lint; gh repo create GnuDaSsa/donawa-gecko-price --private --source=. --remote=origin --push",
     "lastResult": "pass",
-    "notes": "15개 테스트 파일 100개 테스트, ESLint, Next.js 16.3 build가 PASS했다. 로컬 HTTP에서 `/` 200/back 0, `/nearby` 200/back 1, `/nearby**` 404/back 1을 확인했다. Vercel deployment dpl_AJYVSQKfH4Kub6afZSDC3kzjQMeN가 READY/production으로 완료되어 canonical https://donawa-gecko-price.vercel.app 에 alias됐다. 인앱 브라우저는 webview attach timeout으로 자동 탭 열기에 실패했다."
+    "notes": "174개 파일 42,108줄을 초기 커밋 6a8470e로 저장했다. 실제 .env/.env.local/.env.collectors와 .vercel은 gitignore로 제외했고 staged secret scan은 실제 키를 찾지 않았다. 연락처 패턴은 마스킹 검증용 가짜 테스트 fixture와 package-lock 메타데이터뿐이었다. 15개 테스트 파일 100개 테스트와 ESLint가 PASS했다. 비공개 저장소 https://github.com/GnuDaSsa/donawa-gecko-price 를 생성했고 main이 origin/main을 추적한다."
   }
 }
