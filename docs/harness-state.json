@@ -4,10 +4,10 @@
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
   "nextStep": "새 박람회를 추가할 때 공식 원문과 이미지 출처를 재검증하고 lib/expo-events.ts 및 public/expos/ATTRIBUTION.md를 갱신한다.",
-  "lastUpdated": "2026-08-13T23:42:00+09:00",
+  "lastUpdated": "2026-08-13T23:57:00+09:00",
   "verification": {
-    "lastCommand": "npm run test && npm run lint && npm run build; system Chrome Playwright desktop/mobile carousel QA",
+    "lastCommand": "npx -y vercel@58.11.0 deploy . --prod --yes; Vercel get_deployment; Vercel get_runtime_errors",
     "lastResult": "pass",
-    "notes": "16개 테스트 파일 104개 테스트, ESLint, Next.js 16.3 프로덕션 빌드가 PASS했다. 실제 Chrome에서 데스크톱 647px/647px 균등 분할, 4개 행사 링크/이미지 로딩, 3초 후 왼쪽 이동, 모바일 366px 단일 열, 가로 넘침 없음까지 확인했다. 화면 증거는 gitignore된 output/playwright/home-expo-carousel-{desktop,mobile}.png에 있다."
+    "notes": "커밋 b9f6fab의 Git archive 패키지를 Vercel 프로덕션에 배포했다. deployment dpl_E4yqbuyCWfSMAUYLuTNuBkCWgpSz가 READY이고 alias https://donawa-gecko-price.vercel.app 연결이 확인됐다. 배포 직후 30분 범위 런타임 오류는 0건이다. 저장소 직접 배포 첫 시도 dpl_D6Mq58AKixABrMWsF1ffQSTdVaYy는 Hobby 팀의 Git 커밋 작성자 연결 검사로 BLOCKED되어 서비스에 승격되지 않았다."
   }
 }
