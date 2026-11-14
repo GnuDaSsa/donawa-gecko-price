@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { BrandIntro } from "@/components/brand-intro";
 import { HomeFeatureShowcase } from "@/components/home-feature-showcase";
 import { MorphGrid } from "@/components/morph-grid";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getHomeMarketSnapshot } from "@/lib/data/repository";
 import { expoEvents, getKoreaDateKey } from "@/lib/expo-events";
@@ -69,6 +70,7 @@ export default async function Home({ searchParams }: Props) {
         </section>
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { NearbyShopFinder } from "@/components/nearby-shop-finder";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getNearbyShopLocations } from "@/lib/data/repository";
 
@@ -40,6 +41,7 @@ export default async function NearbyPage() {
         )}
       </div>
 
+      <SiteFooter />
     </main>
   );
 }

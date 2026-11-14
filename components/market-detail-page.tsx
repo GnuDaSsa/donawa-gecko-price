@@ -6,6 +6,7 @@ import { ComparisonOverview } from "@/components/comparison-overview";
 import { DetailHeroImage } from "@/components/detail-hero-image";
 import { MorphListings } from "@/components/morph-listings";
 import { PriceDistribution } from "@/components/price-distribution";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getAvailableComparisonListings } from "@/lib/data/comparisons";
 import type { Listing, Morph, PlatformComparison } from "@/lib/types";
@@ -88,6 +89,8 @@ export function MarketDetailPage({
 
         <AllListings morph={subject} listings={pricePool} />
       </div>
+
+      <SiteFooter />
     </main>
   );
 }
