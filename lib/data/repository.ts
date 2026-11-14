@@ -3,6 +3,7 @@ import { cache } from "react";
 import type { Database, Json } from "@/lib/database.types";
 import { buildTraitSubject } from "@/lib/data/catalog-traits";
 import { selectMidMarketHomeImage } from "@/lib/data/home-market";
+import { chunkIds, fetchAllPages } from "@/lib/data/pagination";
 import { listings as mockListings } from "@/lib/data/listings";
 import { morphs as mockMorphs } from "@/lib/data/morphs";
 import { platforms as mockPlatforms } from "@/lib/data/platforms";
@@ -194,13 +195,18 @@ export const getVisibleMorphs = cache(async (): Promise<Morph[]> => {
       .sort((a, b) => a.displayOrder - b.displayOrder);
   }
 
-  const { data, error } = await client
+  const query = client
     .from("morphs")
     .select("*")
-    .order("display_order", { ascending: true });
+    .order("display_order", { ascending: true })
+    .order("id", { ascending: true });
 
-  if (error) throw new Error(`모프 목록을 불러오지 못했습니다: ${error.message}`);
-  return data.map(mapMorph);
+  const rows = await fetchAllPages<MorphRow>(
+    (from, to) => query.range(from, to),
+    "모프 목록을 불러오지 못했습니다",
+  );
+
+  return rows.map(mapMorph);
 });
 
 export const getFilterableTraits = cache(async (): Promise<Trait[]> => {
@@ -211,14 +217,19 @@ export const getFilterableTraits = cache(async (): Promise<Trait[]> => {
       .sort((a, b) => a.nameKo.localeCompare(b.nameKo, "ko"));
   }
 
-  const { data, error } = await client
+  const query = client
     .from("traits")
     .select("*")
     .eq("is_filterable", true)
-    .order("name_ko", { ascending: true });
+    .order("name_ko", { ascending: true })
+    .order("id", { ascending: true });
 
-  if (error) throw new Error(`모프 키워드를 불러오지 못했습니다: ${error.message}`);
-  return data.map(mapTrait);
+  const rows = await fetchAllPages<TraitRow>(
+    (from, to) => query.range(from, to),
+    "모프 키워드를 불러오지 못했습니다",
+  );
+
+  return rows.map(mapTrait);
 });
 
 export const getHomeMarketSnapshot = cache(async (): Promise<HomeMarketSnapshot> => {
@@ -232,7 +243,7 @@ export const getHomeMarketSnapshot = cache(async (): Promise<HomeMarketSnapshot>
 
   const source = client
     ? await (async () => {
-        const { data, error } = await client
+        const query = client
           .from("listings")
           .select(`
             id,
@@ -247,13 +258,13 @@ export const getHomeMarketSnapshot = cache(async (): Promise<HomeMarketSnapshot>
           `)
           .eq("status", "ACTIVE")
           .eq("price_type", "FIXED")
-          .not("current_price", "is", null);
+          .not("current_price", "is", null)
+          .order("id", { ascending: true });
 
-        if (error) {
-          throw new Error(`홈 가격 요약을 불러오지 못했습니다: ${error.message}`);
-        }
-
-        return data as unknown as MarketListingRow[];
+        return await fetchAllPages<MarketListingRow>(
+          (from, to) => query.range(from, to),
+          "홈 가격 요약을 불러오지 못했습니다",
+        );
       })()
     : mockListings
         .filter(
@@ -403,7 +414,7 @@ export const getComparableListings = cache(async (morphId: string): Promise<List
   const client = getSupabaseClient();
   if (!client) return filterComparableListings(mockListings, morphId);
 
-  const { data, error } = await client
+  const query = client
     .from("listings")
     .select(`
       *,
@@ -417,10 +428,21 @@ export const getComparableListings = cache(async (morphId: string): Promise<List
     .eq("status", "ACTIVE")
     .eq("price_type", "FIXED")
     .not("current_price", "is", null)
-    .order("current_price", { ascending: true });
+    .order("current_price", { ascending: true })
+    .order("id", { ascending: true });
 
-  if (error) throw new Error(`현재 매물을 불러오지 못했습니다: ${error.message}`);
-  return (data as unknown as ListingJoinRow[]).map(mapListing);
+  const rows = await fetchAllPages<ListingJoinRow>(
+    (from, to) => query.range(from, to),
+    "현재 매물을 불러오지 못했습니다",
+  );
+
+  return rows
+    .map(mapListing)
+    .sort(
+      (left, right) =>
+        (left.currentPrice ?? 0) - (right.currentPrice ?? 0) ||
+        left.id.localeCompare(right.id),
+    );
 });
 
 export const getTraitBySlug = cache(async (slug: string): Promise<Trait | undefined> => {
@@ -455,36 +477,62 @@ export const getComparableListingsByTraitSlug = cache(
     const trait = await getTraitBySlug(traitSlug);
     if (!trait) return [];
 
-    const { data: links, error: linksError } = await client
+    const linksQuery = client
       .from("listing_traits")
       .select("listing_id")
-      .eq("trait_id", trait.id);
+      .eq("trait_id", trait.id)
+      .order("listing_id", { ascending: true });
 
-    if (linksError) {
-      throw new Error(`특성 매물 연결을 불러오지 못했습니다: ${linksError.message}`);
-    }
+    const links = await fetchAllPages<{ listing_id: string }>(
+      (from, to) => linksQuery.range(from, to),
+      "특성 매물 연결을 불러오지 못했습니다",
+    );
 
     const listingIds = [...new Set(links.map(({ listing_id }) => listing_id))];
     if (listingIds.length === 0) return [];
 
-    const { data, error } = await client
-      .from("listings")
-      .select(`
-        *,
-        platform:platforms!listings_platform_id_fkey(*),
-        listing_traits(
-          source_text,
-          trait:traits!listing_traits_trait_id_fkey(*)
-        )
-      `)
-      .in("id", listingIds)
-      .eq("status", "ACTIVE")
-      .eq("price_type", "FIXED")
-      .not("current_price", "is", null)
-      .order("current_price", { ascending: true });
+    // 키워드 하나가 1,000건을 넘으면 `.in()` 한 번으로는 다시 1,000행에서 잘리고
+    // URL 길이도 위험해진다. id를 배치로 나눠 각 배치를 전부 페이지네이션한다.
+    const pages = await Promise.all(
+      chunkIds(listingIds).map((ids) => {
+        const query = client
+          .from("listings")
+          .select(`
+            *,
+            platform:platforms!listings_platform_id_fkey(*),
+            listing_traits(
+              source_text,
+              trait:traits!listing_traits_trait_id_fkey(*)
+            )
+          `)
+          .in("id", ids)
+          .eq("status", "ACTIVE")
+          .eq("price_type", "FIXED")
+          .not("current_price", "is", null)
+          .order("current_price", { ascending: true })
+          .order("id", { ascending: true });
 
-    if (error) throw new Error(`특성별 현재 매물을 불러오지 못했습니다: ${error.message}`);
-    return (data as unknown as ListingJoinRow[]).map(mapListing);
+        return fetchAllPages<ListingJoinRow>(
+          (from, to) => query.range(from, to),
+          "특성별 현재 매물을 불러오지 못했습니다",
+        );
+      }),
+    );
+
+    const seen = new Set<string>();
+    return pages
+      .flat()
+      .filter((row) => {
+        if (seen.has(row.id)) return false;
+        seen.add(row.id);
+        return true;
+      })
+      .map(mapListing)
+      .sort(
+        (left, right) =>
+          (left.currentPrice ?? 0) - (right.currentPrice ?? 0) ||
+          left.id.localeCompare(right.id),
+      );
   },
 );
 
@@ -492,14 +540,19 @@ export const getAllPlatforms = cache(async (): Promise<Platform[]> => {
   const client = getSupabaseClient();
   if (!client) return mockPlatforms;
 
-  const { data, error } = await client
+  const query = client
     .from("platforms")
     .select("*")
     .neq("name", "모프하우스")
-    .order("name", { ascending: true });
+    .order("name", { ascending: true })
+    .order("id", { ascending: true });
 
-  if (error) throw new Error(`플랫폼을 불러오지 못했습니다: ${error.message}`);
-  return data.map(mapPlatform);
+  const rows = await fetchAllPages<PlatformRow>(
+    (from, to) => query.range(from, to),
+    "플랫폼을 불러오지 못했습니다",
+  );
+
+  return rows.map(mapPlatform);
 });
 
 const getActivePlatforms = cache(async (): Promise<Platform[]> =>
@@ -543,7 +596,7 @@ export const getNearbyShopLocations = cache(async (): Promise<NearbyShopLocation
   const client = getSupabaseClient();
   if (!client) return [];
 
-  const { data: locationData, error: locationError } = await client
+  const locationQuery = client
     .from("shop_locations")
     .select(`
       *,
@@ -551,50 +604,63 @@ export const getNearbyShopLocations = cache(async (): Promise<NearbyShopLocation
     `)
     .eq("is_active", true)
     .order("region_label", { ascending: true })
-    .order("name", { ascending: true });
+    .order("name", { ascending: true })
+    .order("id", { ascending: true });
 
-  if (locationError) {
-    throw new Error(`매장 위치를 불러오지 못했습니다: ${locationError.message}`);
-  }
-  const locations = locationData as unknown as ShopLocationJoinRow[];
+  const locationRows = await fetchAllPages<ShopLocationJoinRow>(
+    (from, to) => locationQuery.range(from, to),
+    "매장 위치를 불러오지 못했습니다",
+  );
+  const locations = locationRows as unknown as ShopLocationJoinRow[];
   const platformIds = [...new Set(locations.map(({ platform_id }) => platform_id))];
   if (platformIds.length === 0) return [];
 
-  const [{ data: fulfillmentData, error: fulfillmentError }, {
-    data: listingData,
-    error: listingError,
-  }] = await Promise.all([
-    client
-      .from("platform_fulfillment_options")
-      .select("*")
-      .in("platform_id", platformIds),
-    client
-      .from("listings")
-      .select(`
-        id,
-        platform_id,
-        original_title,
-        original_url,
-        current_price,
-        last_checked_at,
-        morph:morphs!listings_morph_id_fkey(name_ko)
-      `)
-      .in("platform_id", platformIds)
-      .eq("status", "ACTIVE")
-      .eq("price_type", "FIXED")
-      .not("current_price", "is", null)
-      .order("current_price", { ascending: true }),
-  ]);
-  if (fulfillmentError) {
-    throw new Error(`배송 정책을 불러오지 못했습니다: ${fulfillmentError.message}`);
-  }
-  if (listingError) {
-    throw new Error(`매장별 현재 매물을 불러오지 못했습니다: ${listingError.message}`);
-  }
+  const fulfillmentPages = await Promise.all(
+    chunkIds(platformIds).map((ids) =>
+      fetchAllPages<FulfillmentRow>(
+        (from, to) =>
+          client
+            .from("platform_fulfillment_options")
+            .select("*")
+            .in("platform_id", ids)
+            .order("id", { ascending: true })
+            .range(from, to),
+        "배송 정책을 불러오지 못했습니다",
+      ),
+    ),
+  );
 
+  const listingPages = await Promise.all(
+    chunkIds(platformIds).map((ids) =>
+      fetchAllPages<NearbyListingRow>(
+        (from, to) =>
+          client
+            .from("listings")
+            .select(`
+              id,
+              platform_id,
+              original_title,
+              original_url,
+              current_price,
+              last_checked_at,
+              morph:morphs!listings_morph_id_fkey(name_ko)
+            `)
+            .in("platform_id", ids)
+            .eq("status", "ACTIVE")
+            .eq("price_type", "FIXED")
+            .not("current_price", "is", null)
+            .order("current_price", { ascending: true })
+            .order("id", { ascending: true })
+            .range(from, to),
+        "매장별 현재 매물을 불러오지 못했습니다",
+      ),
+    ),
+  );
+
+  const fulfillmentData = fulfillmentPages.flat();
+  const listingData = listingPages.flat();
   const fulfillmentByPlatform = new Map<string, FulfillmentOption[]>();
-  for (const row of fulfillmentData as FulfillmentRow[]) {
-    const options = fulfillmentByPlatform.get(row.platform_id) ?? [];
+  for (const row of fulfillmentData as FulfillmentRow[]) {    const options = fulfillmentByPlatform.get(row.platform_id) ?? [];
     options.push(mapFulfillmentOption(row));
     fulfillmentByPlatform.set(row.platform_id, options);
   }

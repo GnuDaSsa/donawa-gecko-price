@@ -744,6 +744,28 @@ export function parseWatertailProductHtml(
 
 type MyBreedersSitemapRow = { url: string; lastModified: number };
 
+/**
+ * MyBreeders는 2026년 가을에 상품 경로를 `/product/{id}`에서
+ * `/pet/product/{id}`로 옮겼다(구 경로는 308로 리다이렉트). robots.txt가
+ * `/pet/product/`를 명시적으로 Allow하므로 두 표기를 모두 받되, 저장·요청은
+ * 항상 현재 정식 경로로 정규화한다.
+ */
+const MY_BREEDERS_PRODUCT_PATH = /^\/(?:pet\/)?product\/([A-Za-z0-9_-]+)$/;
+
+export function normalizeMyBreedersProductUrl(value: string): string | undefined {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" || url.hostname !== "mybreeders.com") return undefined;
+
+    const match = url.pathname.match(MY_BREEDERS_PRODUCT_PATH);
+    if (!match) return undefined;
+
+    return `https://mybreeders.com/pet/product/${match[1]}`;
+  } catch {
+    return undefined;
+  }
+}
+
 export function parseMyBreedersSitemap(xml: string): string[] {
   const rows: MyBreedersSitemapRow[] = [];
 
@@ -751,25 +773,15 @@ export function parseMyBreedersSitemap(xml: string): string[] {
     const location = decodeHtml(block[1].match(/<loc>([\s\S]*?)<\/loc>/i)?.[1] ?? "").trim();
     if (!location) continue;
 
-    try {
-      const url = new URL(location);
-      if (
-        url.protocol !== "https:" ||
-        url.hostname !== "mybreeders.com" ||
-        !/^\/product\/[A-Za-z0-9_-]+$/.test(url.pathname)
-      ) {
-        continue;
-      }
+    const url = normalizeMyBreedersProductUrl(location);
+    if (!url) continue;
 
-      const lastModifiedText = block[1].match(/<lastmod>([\s\S]*?)<\/lastmod>/i)?.[1];
-      const parsedDate = lastModifiedText ? Date.parse(lastModifiedText.trim()) : Number.NaN;
-      rows.push({
-        url: url.toString(),
-        lastModified: Number.isFinite(parsedDate) ? parsedDate : 0,
-      });
-    } catch {
-      // Ignore malformed sitemap locations.
-    }
+    const lastModifiedText = block[1].match(/<lastmod>([\s\S]*?)<\/lastmod>/i)?.[1];
+    const parsedDate = lastModifiedText ? Date.parse(lastModifiedText.trim()) : Number.NaN;
+    rows.push({
+      url,
+      lastModified: Number.isFinite(parsedDate) ? parsedDate : 0,
+    });
   }
 
   return rows
@@ -789,7 +801,7 @@ export function parseMyBreedersHomeProductUrls(html: string): string[] {
   const urls = new Set<string>();
 
   for (const match of productPayload.matchAll(/"productNo":"([A-Za-z0-9_-]+)"/g)) {
-    urls.add(`https://mybreeders.com/product/${match[1]}`);
+    urls.add(`https://mybreeders.com/pet/product/${match[1]}`);
   }
 
   return [...urls];

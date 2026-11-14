@@ -7,6 +7,16 @@ import {
   type DictionaryRow,
 } from "../_shared/dictionary.ts";
 import {
+  decideRecheckAction,
+  describeRecheckAction,
+  RECHECK_FETCH_TIMEOUT_MS,
+  RECHECK_MAX_ITEMS,
+  RECHECK_PRODUCT_DELAY_MS,
+  type RecheckAction,
+  type RecheckFetchOutcome,
+} from "../_shared/recheck.ts";
+import {
+  normalizeMyBreedersProductUrl,
   parseCafe24CategoryHtml,
   parseCafe24ProductHtml,
   parseImwebCategoryHtml,
@@ -424,6 +434,10 @@ async function fetchText(url: string): Promise<string> {
     signal: AbortSignal.timeout(12_000),
   });
   if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+  return readResponseText(response);
+}
+
+async function readResponseText(response: Response): Promise<string> {
   const contentType = response.headers.get("content-type") ?? "";
   const charset = contentType.match(/charset\s*=\s*["']?([^;"'\s]+)/i)?.[1]
     ?.toLowerCase();
@@ -432,6 +446,35 @@ async function fetchText(url: string): Promise<string> {
     return new TextDecoder("euc-kr").decode(bytes);
   }
   return new TextDecoder("utf-8").decode(bytes);
+}
+
+/**
+ * 재확인은 404/410을 오류가 아니라 “상품이 사라졌다”는 결과로 읽어야 하므로
+ * fetchText와 달리 비정상 응답도 상태 코드와 함께 돌려준다.
+ */
+async function fetchForRecheck(url: string): Promise<RecheckFetchOutcome> {
+  try {
+    const response = await fetch(url, {
+      redirect: "follow",
+      headers: {
+        Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.8",
+        "User-Agent": USER_AGENT,
+      },
+      signal: AbortSignal.timeout(RECHECK_FETCH_TIMEOUT_MS),
+    });
+
+    if (!response.ok) {
+      return { kind: "response", statusCode: response.status, html: "" };
+    }
+
+    return {
+      kind: "response",
+      statusCode: response.status,
+      html: await readResponseText(response),
+    };
+  } catch {
+    return { kind: "error" };
+  }
 }
 
 async function discoverCafe24Urls(
@@ -552,18 +595,10 @@ function validateMyBreedersUrls(values: unknown, limit: number): string[] {
 
   for (const value of values) {
     if (typeof value !== "string") continue;
-    try {
-      const url = new URL(value);
-      if (
-        url.protocol === "https:" &&
-        url.hostname === "mybreeders.com" &&
-        /^\/product\/[A-Za-z0-9_-]+$/.test(url.pathname)
-      ) {
-        urls.add(url.toString());
-      }
-    } catch {
-      // Ignore any caller-provided value outside the exact public product host/path.
-    }
+    // 정식 `/pet/product/{id}`와 구 `/product/{id}` 표기를 모두 받되,
+    // 저장·요청은 항상 리다이렉트를 거치지 않는 정식 URL로 맞춘다.
+    const normalized = normalizeMyBreedersProductUrl(value);
+    if (normalized) urls.add(normalized);
     if (urls.size >= limit) break;
   }
 
@@ -738,6 +773,227 @@ async function collectSource(
   }
 }
 
+type ProductParser = (html: string, url: string) => PublicShopListing | null;
+
+/**
+ * 플랫폼별 상품 파서 레지스트리. 수집할 때 쓰는 파서를 재확인에도 그대로
+ * 쓰므로 상품 페이지 해석이 두 곳에서 달라지지 않는다.
+ */
+function buildProductParsers(): Map<string, ProductParser> {
+  const parsers = new Map<string, ProductParser>([
+    ["키워", parseKiwoProductHtml],
+    ["워터테일", parseWatertailProductHtml],
+    ["마이브리더즈", parseMyBreedersProductHtml],
+    ["뉴런렙타일", parseNewrunProductHtml],
+    [
+      "헬로게코",
+      (html, url) =>
+        parseImwebProductHtml(html, url, {
+          expectedHostname: "hellogcekogood.com",
+          source: "hellogecko-imweb-jsonld",
+          safeDescription: "헬로게코 공개 크레스티드게코 카테고리·상품 페이지",
+        }),
+    ],
+    ["주세요닷컴", (html, url) => parseZooseyoProductHtml(html, url)],
+  ]);
+
+  for (const source of CAFE24_SOURCES) {
+    parsers.set(
+      source.platformName,
+      (html, url) => parseCafe24ProductHtml(html, url, source.parserOptions),
+    );
+  }
+
+  return parsers;
+}
+
+type RecheckTargetRow = {
+  id: string;
+  platform_id: string;
+  external_id: string | null;
+  morph_id: string | null;
+  original_title: string;
+  original_url: string;
+  current_price: number | null;
+  image_url: string | null;
+};
+
+type RecheckSummary = {
+  mode: "recheck_stale";
+  ok: boolean;
+  checked: number;
+  deleted: number;
+  sold: number;
+  reobserved: number;
+  kept: number;
+  skipped: number;
+  warnings: number;
+  reason?: string;
+  error?: string;
+};
+
+/**
+ * `last_checked_at`이 가장 오래된 ACTIVE 매물부터 재확인한다.
+ *
+ * 삭제(404/410)·명시적 판매완료만 상태를 바꾸고, 일시 장애나 해석 불가는
+ * 상태를 유지한 채 마지막 확인 시각만 당긴다. 그래서 매일 돌아도 대기열이
+ * 같은 행에 머물지 않고 계속 뒤로 회전한다.
+ */
+async function recheckStaleListings(
+  supabase: SupabaseAdmin,
+  platformsById: Map<string, PlatformRow>,
+  morphs: DictionaryRow[],
+  traits: DictionaryRow[],
+  limit: number,
+): Promise<RecheckSummary> {
+  const parsers = buildProductParsers();
+  const automatedPlatformIds = [...platformsById.values()]
+    .filter((platform) => parsers.has(platform.name))
+    .map((platform) => platform.id);
+  const summary: RecheckSummary = {
+    mode: "recheck_stale",
+    ok: true,
+    checked: 0,
+    deleted: 0,
+    sold: 0,
+    reobserved: 0,
+    kept: 0,
+    skipped: 0,
+    warnings: 0,
+  };
+
+  if (automatedPlatformIds.length === 0) return summary;
+
+  const { data, error } = await supabase
+    .from("listings")
+    .select(
+      "id, platform_id, external_id, morph_id, original_title, original_url, current_price, image_url",
+    )
+    .eq("status", "ACTIVE")
+    .in("platform_id", automatedPlatformIds)
+    .order("last_checked_at", { ascending: true })
+    .order("id", { ascending: true })
+    .limit(limit);
+
+  if (error) {
+    return { ...summary, ok: false, error: error.message };
+  }
+
+  const warnings: string[] = [];
+  const rows = (data ?? []) as RecheckTargetRow[];
+  // 마이그레이션이 아직 배포되지 않았으면 매 행마다 같은 오류를 반복하지 않고
+  // 한 번에 멈추고 운영자가 알아볼 수 있는 메시지를 돌려준다.
+  let missingRecheckRpc = false;
+
+  for (const row of rows) {
+    const platform = platformsById.get(row.platform_id);
+    const parser = platform ? parsers.get(platform.name) : undefined;
+
+    if (!parser) {
+      summary.skipped += 1;
+      continue;
+    }
+
+    let url: URL;
+    try {
+      url = new URL(row.original_url);
+    } catch {
+      summary.skipped += 1;
+      continue;
+    }
+
+    if (url.protocol !== "https:") {
+      summary.skipped += 1;
+      continue;
+    }
+
+    const outcome = await fetchForRecheck(row.original_url);
+    const listing =
+      outcome.kind === "response" && outcome.html
+        ? parser(outcome.html, row.original_url)
+        : null;
+    const action: RecheckAction = decideRecheckAction(
+      outcome,
+      listing ? { status: listing.status } : null,
+    );
+    const reason = describeRecheckAction(action, outcome);
+    summary.checked += 1;
+
+    try {
+      if (action === "DELETED") {
+        const { error: markError } = await supabase.rpc("mark_listing_status", {
+          p_listing_id: row.id,
+          p_status: "DELETED",
+          p_reason: reason,
+        });
+        if (markError) throw markError;
+        summary.deleted += 1;
+      } else if (listing && action !== "KEEP") {
+        const nextStatus = action === "SOLD" ? "SOLD" : "ACTIVE";
+        const morph = matchDictionary(listing.morphText, morphs);
+        const { data: listingId, error: observationError } = await supabase.rpc(
+          "apply_listing_observation",
+          {
+            p_platform_id: row.platform_id,
+            p_external_id: row.external_id ?? listing.externalId,
+            p_morph_id: morph?.id ?? row.morph_id,
+            p_original_title: listing.originalTitle || row.original_title,
+            p_original_description: listing.safeDescription || null,
+            p_original_url: listing.originalUrl,
+            p_image_url: listing.imageUrl ?? row.image_url,
+            p_current_price: listing.currentPrice ?? row.current_price,
+            p_price_type: listing.priceType,
+            p_sex: listing.sex,
+            p_weight_g: listing.weightG ?? null,
+            p_bundle_count: null,
+            p_status: nextStatus,
+            p_classification_source: "AUTO_KEYWORD",
+            p_raw_data: { ...listing.rawData, recheck_reason: reason },
+          },
+        );
+        if (observationError) throw observationError;
+        await replaceTraits(supabase, listingId as string, listing, traits);
+
+        if (action === "SOLD") summary.sold += 1;
+        else summary.reobserved += 1;
+      } else {
+        // 일시 장애·해석 불가: 상태는 그대로 두고 다음 순번으로 넘긴다.
+        const { error: touchError } = await supabase.rpc("mark_listing_status", {
+          p_listing_id: row.id,
+          p_status: "ACTIVE",
+          p_reason: reason,
+        });
+        if (touchError) throw touchError;
+        summary.kept += 1;
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "recheck error";
+      warnings.push(message.slice(0, 180));
+
+      if (
+        message.includes("mark_listing_status") &&
+        /does not exist|find the function|schema cache/i.test(message)
+      ) {
+        missingRecheckRpc = true;
+        break;
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, RECHECK_PRODUCT_DELAY_MS));
+  }
+
+  summary.warnings = warnings.length;
+  if (warnings.length > 0) summary.reason = warnings.slice(0, 8).join(" | ");
+
+  if (missingRecheckRpc) {
+    summary.ok = false;
+    summary.error =
+      "mark_listing_status RPC가 없습니다. supabase/migrations/20261114121000_add_stale_listing_reaper.sql을 먼저 적용하세요.";
+  }
+
+  return summary;
+}
+
 Deno.serve(async (request: Request) => {
   if (request.method !== "POST") {
     return jsonResponse({ ok: false, error: "POST required" }, 405);
@@ -769,6 +1025,7 @@ Deno.serve(async (request: Request) => {
   }
 
   const body = await request.json().catch(() => ({})) as {
+    mode?: string;
     configureScheduler?: boolean;
     limit?: number;
     kiwoPages?: number;
@@ -881,6 +1138,22 @@ Deno.serve(async (request: Request) => {
   const platforms = new Map(
     (platformRows as PlatformRow[]).map((platform) => [platform.name, platform]),
   );
+
+  if (body.mode === "recheck_stale") {
+    const requestedRecheckLimit = Number.isFinite(body.limit)
+      ? Math.floor(body.limit!)
+      : RECHECK_MAX_ITEMS;
+    const recheckLimit = Math.max(1, Math.min(requestedRecheckLimit, RECHECK_MAX_ITEMS));
+    const summary = await recheckStaleListings(
+      supabase,
+      new Map((platformRows as PlatformRow[]).map((platform) => [platform.id, platform])),
+      morphRows as DictionaryRow[],
+      traitRows as DictionaryRow[],
+      recheckLimit,
+    );
+
+    return jsonResponse(summary, summary.ok ? 200 : 500);
+  }
   const kiwo = platforms.get("키워");
   const watertail = platforms.get("워터테일");
   const myBreeders = platforms.get("마이브리더즈");
