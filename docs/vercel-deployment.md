@@ -13,6 +13,17 @@ Only these browser-safe variables are configured in Vercel Preview and Productio
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
+Server-only variables:
+
+- `DONAWA_CONTACT_EMAIL` — 문의 메일 주소. 5,000 조회를 넘었을 때만 `/api/visit` 응답에 실린다.
+- `DONAWA_VISIT_COUNTER_URL` / `DONAWA_VISIT_COUNTER_NAMESPACE` / `DONAWA_VISIT_COUNTER_KEY` (optional) — 방문 카운터 저장소 위치.
+
+## Visitor counter
+
+- `GET /api/visit` → `{ count, threshold, contactVisible, contactEmail }`. 카운터를 세지 않으므로 확인용으로 그대로 호출하면 된다.
+- `POST /api/visit` → 방문 1회 기록(브라우저 세션당 1회, 봇·교차 사이트 요청 제외) 후 같은 형식으로 응답.
+- 5,000 미만이거나 카운터를 읽지 못하면 `contactVisible: false`, `contactEmail: null`.
+
 `CRON_SECRET`, service-role keys, collector credentials, login profiles, and local snapshots must remain outside Vercel.
 
 ## Deploy and inspect

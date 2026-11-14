@@ -1,3 +1,5 @@
+import { VisitorCounter } from "@/components/visitor-counter";
+
 export function SiteFooter() {
   return (
     <footer className="site-footer page-shell">
@@ -9,6 +11,8 @@ export function SiteFooter() {
       <p className="site-footer__notice">
         가격과 재고는 판매처가 공개한 정보를 모은 것으로, 실제 거래 조건과 다를 수 있습니다.
       </p>
+
+      <VisitorCounter />
     </footer>
   );
 }

@@ -1398,6 +1398,34 @@ html.brand-intro-open {
   text-align: right;
 }
 
+.site-footer > .site-footer__counter {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.site-footer__counter span {
+  font-variant-numeric: tabular-nums;
+}
+
+.site-footer__contact {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-footer__contact:hover {
+  color: var(--ink-soft);
+}
+
 /* Morph detail */
 .detail-content {
   padding: 0 0 96px;
