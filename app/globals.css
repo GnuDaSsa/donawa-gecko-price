@@ -1391,6 +1391,49 @@ html.brand-intro-open {
   margin: 0;
 }
 
+.site-footer__partnership {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.site-footer__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 740;
+  letter-spacing: -0.01em;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.site-footer__contact:hover,
+.site-footer__contact:focus-visible {
+  color: var(--orange);
+  text-decoration-color: var(--orange);
+  outline: none;
+}
+
+.site-footer__contact-note {
+  color: var(--ink-faint);
+  font-size: 0.66rem;
+}
+
+.site-footer__notice {
+  max-width: 44ch;
+  color: var(--ink-faint);
+  line-height: 1.55;
+  text-align: right;
+}
+
 /* Morph detail */
 .detail-content {
   padding: 0 0 96px;
@@ -3075,6 +3118,10 @@ html.brand-intro-open {
     align-items: start;
     flex-direction: column;
     gap: 4px;
+  }
+
+  .site-footer__notice {
+    text-align: left;
   }
 
   .detail-content {
