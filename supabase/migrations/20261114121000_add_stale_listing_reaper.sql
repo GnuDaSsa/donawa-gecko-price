@@ -31,8 +31,8 @@ as $$
 declare
   v_old_status text;
 begin
-  if p_status not in ('ACTIVE', 'SOLD', 'DELETED', 'STALE', 'UNKNOWN') then
-    raise exception 'Unsupported recheck status: %', p_status;
+  if p_status is null or p_status not in ('ACTIVE', 'SOLD', 'DELETED', 'STALE', 'UNKNOWN') then
+    raise exception 'Unsupported recheck status: %', coalesce(p_status, 'null');
   end if;
 
   select status
