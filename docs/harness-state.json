@@ -1,13 +1,13 @@
 {
-  "currentGoal": "모프·키워드 상세 페이지 히어로 이미지를 홈 카드에서 선택한 동일한 중간 가격대 대표 이미지와 일치시킨다.",
+  "currentGoal": "Sprint 1: 1,000행 절단 버그, 오래된 ACTIVE 재확인(reaper), MyBreeders 경로 복구, 박람회 갱신, robots/sitemap/OG 메타데이터 추가.",
   "status": "complete",
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "향후 대표 이미지 선택 규칙을 바꿀 때 홈 카드와 모프·키워드 상세 히어로 URL 일치 검증을 함께 유지한다.",
-  "lastUpdated": "2026-08-14T07:57:00+09:00",
+  "nextStep": "Supabase 마이그레이션(20261114121000_add_stale_listing_reaper.sql) 적용 → collect-public-shops·collect-feedle 재배포 → Vercel 재배포 후 /robots.txt·/sitemap.xml 확인. 남은 Sprint 2 항목은 이슈 #6~#8.",
+  "lastUpdated": "2026-11-14T12:30:00+09:00",
   "verification": {
-    "lastCommand": "npm run test && npm run lint && npm run build; Playwright CLI local/production home-to-detail image URL QA; Vercel get_deployment/get_runtime_errors",
+    "lastCommand": "npm test && npm run lint && npx tsc --noEmit && npm run build; next start 스모크 테스트(/, /morph/lilly-white, /nearby, robots.txt, sitemap.xml)",
     "lastResult": "pass",
-    "notes": "16개 테스트 파일 105개 테스트, ESLint, Next.js 16.3 프로덕션 빌드가 PASS했다. localhost에서 홈 헷 아잔틱 카드와 `/trait/het-axanthic` 히어로가 동일한 MyBreeders URL을 사용하고 0 console errors·가로 넘침 없음임을 확인했으며 `/morph/lilly-white`도 URL이 일치했다. canonical Vercel에서도 헷 아잔틱 홈/상세 URL이 동일하고 둘 다 로드됐다. 증거는 output/playwright/detail-hero-matches-home-{het-axanthic,production}.png에 있다. 배포 dpl_AA24ZRskE2xFULm8tqGUmjdZdoiw은 READY, canonical alias 연결 완료, 최근 30분 런타임 오류 0건이다."
+    "notes": "19개 테스트 파일 122개 테스트 통과(pagination 5, repository-pagination 4, stale-recheck 6 신규). ESLint·tsc·Next.js 16.3 프로덕션 빌드 통과. /robots.txt·/sitemap.xml 정적 생성 확인(sitemap 1시간 revalidate). next start에서 홈 og:*·canonical, 모프 상세 title·canonical, 신규 대전 박람회 카드 렌더 확인. Edge Function 두 개는 esbuild 번들 검사로 문법 확인했고, Deno 런타임·실DB 실행은 배포 후 이슈 #8에서 검증한다."
   }
 }

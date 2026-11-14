@@ -16,11 +16,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const morph = await getMorphBySlug(slug);
 
-  if (!morph) return { title: "모프를 찾을 수 없음" };
+  if (!morph) return { title: "모프를 찾을 수 없음", robots: { index: false, follow: false } };
+
+  const title = `${morph.nameKo} 현재 최저 호가`;
+  const description = `${morph.nameKo} 모프의 플랫폼별 현재 최저 호가와 판매 매물 비교`;
+  const canonical = `/morph/${morph.slug}`;
+  const image = morph.representativeImage;
 
   return {
-    title: `${morph.nameKo} 현재 최저 호가`,
-    description: `${morph.nameKo} 플랫폼별 최저 호가·판매 매물`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url: canonical,
+      images: [{ url: image, alt: `${morph.nameKo} 대표 이미지` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

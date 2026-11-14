@@ -39,6 +39,19 @@ describe("expo event visibility", () => {
       "2026-busan-reptile-fair-74",
       "2026-daejeon-dinosaur-reptile-expo",
       "2026-cheongju-reptile-companion",
+      "2026-daejeon-creature-carelog",
+      "2026-busan-reptile-companion",
+      "2026-aare-aquarium-reptile",
+    ]);
+  });
+
+  it("keeps the late-November and December expos visible after the 청주 event ends", () => {
+    const upcoming = getUpcomingExpoEvents(expoEvents, "2026-11-16");
+
+    expect(upcoming.map(({ id }) => id)).toEqual([
+      "2026-daejeon-creature-carelog",
+      "2026-busan-reptile-companion",
+      "2026-aare-aquarium-reptile",
     ]);
   });
 

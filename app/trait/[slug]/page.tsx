@@ -16,13 +16,32 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const trait = await getTraitBySlug(resolveTraitSlug(slug));
+  const traitSlug = resolveTraitSlug(slug);
+  const trait = await getTraitBySlug(traitSlug);
 
-  if (!trait) return { title: "모프 키워드를 찾을 수 없음" };
+  if (!trait) {
+    return { title: "모프 키워드를 찾을 수 없음", robots: { index: false, follow: false } };
+  }
+
+  const title = `${trait.nameKo} 현재 최저 호가`;
+  const description = `${trait.nameKo} 키워드의 현재 판매 매물과 플랫폼별 가격 비교`;
+  const canonical = `/trait/${trait.slug}`;
 
   return {
-    title: `${trait.nameKo} 현재 최저 호가`,
-    description: `${trait.nameKo} 키워드 현재 판매 매물·가격 비교`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url: canonical,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

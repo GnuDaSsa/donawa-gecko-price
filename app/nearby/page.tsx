@@ -7,6 +7,18 @@ import { getNearbyShopLocations } from "@/lib/data/repository";
 export const metadata: Metadata = {
   title: "내 주변 매장",
   description: "크레스티드 게코 판매처 거리순·배송·온라인 매물",
+  alternates: { canonical: "/nearby" },
+  openGraph: {
+    type: "website",
+    title: "내 주변 매장",
+    description: "크레스티드 게코 판매처 거리순·배송·온라인 매물",
+    url: "/nearby",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "내 주변 매장",
+    description: "크레스티드 게코 판매처 거리순·배송·온라인 매물",
+  },
 };
 
 export default async function NearbyPage() {

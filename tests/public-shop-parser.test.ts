@@ -9,6 +9,7 @@ import {
   parseKiwoProductHtml,
   parseNewrunCategoryHtml,
   parseNewrunProductHtml,
+  normalizeMyBreedersProductUrl,
   parseMyBreedersHomeProductUrls,
   parseMyBreedersProductHtml,
   parseMyBreedersSitemap,
@@ -419,15 +420,35 @@ describe("MyBreeders public-product parser", () => {
   it("orders public product sitemap URLs by latest modification", () => {
     const xml = `
       <urlset>
-        <url><loc>https://mybreeders.com/product/older</loc><lastmod>2026-04-01T00:00:00Z</lastmod></url>
-        <url><loc>https://mybreeders.com/product/newer</loc><lastmod>2026-06-01T00:00:00Z</lastmod></url>
+        <url><loc>https://mybreeders.com/pet/product/older</loc><lastmod>2026-04-01T00:00:00Z</lastmod></url>
+        <url><loc>https://mybreeders.com/pet/product/newer</loc><lastmod>2026-06-01T00:00:00Z</lastmod></url>
         <url><loc>https://mybreeders.com/api/private</loc><lastmod>2026-07-01T00:00:00Z</lastmod></url>
       </urlset>`;
 
     expect(parseMyBreedersSitemap(xml)).toEqual([
-      "https://mybreeders.com/product/newer",
-      "https://mybreeders.com/product/older",
+      "https://mybreeders.com/pet/product/newer",
+      "https://mybreeders.com/pet/product/older",
     ]);
+  });
+
+  it("canonicalizes the legacy /product/{id} path to the current /pet/product one", () => {
+    const xml = `
+      <urlset>
+        <url><loc>https://mybreeders.com/product/legacy-id</loc><lastmod>2026-05-01T00:00:00Z</lastmod></url>
+        <url><loc>https://mybreeders.com/pet/product/current-id</loc><lastmod>2026-06-01T00:00:00Z</lastmod></url>
+      </urlset>`;
+
+    expect(parseMyBreedersSitemap(xml)).toEqual([
+      "https://mybreeders.com/pet/product/current-id",
+      "https://mybreeders.com/pet/product/legacy-id",
+    ]);
+    expect(normalizeMyBreedersProductUrl("https://mybreeders.com/product/legacy-id")).toBe(
+      "https://mybreeders.com/pet/product/legacy-id",
+    );
+    expect(normalizeMyBreedersProductUrl("https://mybreeders.com/pet/product/current-id/")).toBe(
+      undefined,
+    );
+    expect(normalizeMyBreedersProductUrl("https://evil.example/pet/product/x")).toBe(undefined);
   });
 
   it("discovers only public product ids from the homepage product payload", () => {
@@ -438,8 +459,8 @@ describe("MyBreeders public-product parser", () => {
       ]}}"])</script>`;
 
     expect(parseMyBreedersHomeProductUrls(html)).toEqual([
-      "https://mybreeders.com/product/active-1",
-      "https://mybreeders.com/product/active_2",
+      "https://mybreeders.com/pet/product/active-1",
+      "https://mybreeders.com/pet/product/active_2",
     ]);
   });
 
@@ -463,7 +484,7 @@ describe("MyBreeders public-product parser", () => {
     };
     const result = parseMyBreedersProductHtml(
       rscHtml(product),
-      "https://mybreeders.com/product/product-1",
+      "https://mybreeders.com/pet/product/product-1",
     );
 
     expect(result).toMatchObject({
@@ -497,13 +518,13 @@ describe("MyBreeders public-product parser", () => {
     expect(
       parseMyBreedersProductHtml(
         rscHtml(completed),
-        "https://mybreeders.com/product/sold-1",
+        "https://mybreeders.com/pet/product/sold-1",
       )?.status,
     ).toBe("SOLD");
     expect(
       parseMyBreedersProductHtml(
         rscHtml(leopard),
-        "https://mybreeders.com/product/leopard-1",
+        "https://mybreeders.com/pet/product/leopard-1",
       ),
     ).toBeNull();
   });
