@@ -88,3 +88,11 @@
 - Home expo data: past events stay in `lib/expo-events.ts` (date filtering hides them); 2026-11-28 대전 크리처 케어로그, 2026-12-05 부산 파충류동반자, 2026-12-26 AARE 서울 양재 were added with official posters mirrored into `public/expos/` and provenance in `ATTRIBUTION.md`.
 - SEO: `lib/site.ts` resolves the canonical origin from `NEXT_PUBLIC_SITE_URL` (fallback `https://donawa-gecko-price.vercel.app`); `app/robots.ts` and `app/sitemap.ts` (static routes + DB-derived morph/trait routes, hourly revalidate, static-only fallback when Supabase is unreachable); root layout carries `metadataBase`/OG/Twitter defaults, and every route sets its own canonical. 404-able morph/trait slugs emit `noindex`.
 - Verification for this sprint is `npm test` (122 tests / 19 files), `npm run lint`, `npx tsc --noEmit`, `npm run build`, plus a `next start` smoke test. The Edge Function changes were only syntax-bundled locally; deploying them and applying the migration is tracked in issue #8.
+
+## Sharing previews, share button, IndexNow (2026-11-18)
+- 공유 미리보기는 전부 정적 PNG다. 기본 카드는 `public/og/donawa-og.png`(1200x630), 모프·키워드 상세는 `public/og/{morph|trait}/{slug}.png`. 카드에는 이름만 넣고 가격은 굽지 않는다(하루 두 번 바뀌는 값). 목록은 `lib/og-cards.ts`가 들고 있고, 목록에 없는 슬러그는 기본 카드로 떨어진다. 카드 재생성은 `python3 scripts/build-og-cards.py`(sitemap을 읽어 제목에서 한글 이름을 뽑는다) — 새 모프가 생기면 이 스크립트를 다시 돌려 PNG와 `lib/og-cards.ts`를 함께 갱신한다.
+- 상세 페이지 배지 줄의 `이 표 공유`(`components/share-button.tsx`)는 OS 공유 시트 → 클립보드 복사 → 주소 입력칸 순서로 떨어진다. 공유 문구는 `lib/share.ts`가 만든다(`{모프} 최저 {가격}` + 사이트·매물 수).
+- `generateMetadata`가 최저 호가·매물 수를 넣으므로 상세 메타데이터도 매물 조회를 한 번 더 한다. `lib/data/repository.ts`의 React `cache`가 같은 요청 안에서 중복 조회를 막는다.
+- 구조화 데이터는 `lib/structured-data.ts`: 홈은 `WebSite`, 상세는 `Product` + `AggregateOffer`(lowPrice/highPrice/offerCount). 문자열은 `<`를 이스케이프해서 넣는다.
+- 검색 제출은 IndexNow 하나로 간다. 키 파일은 `public/{key}.txt`, 제출은 `POST https://api.indexnow.org/indexnow`(전 URL 배치)와 네이버 직접 엔드포인트 `https://searchadvisor.naver.com/indexnow`. 네이버·빙·얀덱스·Seznam·Yep이 같은 제출을 공유한다. 구글 sitemap ping은 404로 폐지됐고, 구글·네이버 서치어드바이저 등록은 계정 로그인이 필요하다.
+- `/api/visit` 카운터 대기는 8초다. 읽기는 두 번 시도하고, 방문 기록(hit)은 두 번 세지 않도록 재시도하지 않는다.

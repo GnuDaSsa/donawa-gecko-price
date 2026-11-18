@@ -4,7 +4,7 @@
 - Project ID: `prj_oLsawRwMUKJpBx50lJVQ0oF3QU1o`
 - Team ID: `team_otosiXT47mGUO6GIdSksV9NE`
 - Canonical URL: `https://donawa-gecko-price.vercel.app`
-- Current verified deployment: `dpl_7jigBqypeJRYAaWPxrvexqsmRgUx`
+- Current verified deployment: `dpl_CrvNJk8JiR3q11jLQa5xwqTzreMc` (커밋 `7bccc50`, 2026-11-18 09:05 KST, production READY)
 
 ## Environment boundary
 
