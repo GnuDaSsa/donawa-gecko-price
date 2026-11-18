@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import { getSiteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from "@/lib/site";
+import {
+  DEFAULT_OG_IMAGE_PATH,
+  getSiteUrl,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+} from "@/lib/site";
 
 import "./globals.css";
 
@@ -11,10 +19,10 @@ const geist = Geist({
 });
 
 const DEFAULT_OG_IMAGE = {
-  url: "/geckos/gecko-1.jpg",
-  width: 1200,
-  height: 1200,
-  alt: "도나와 크레스티드 게코 모프 가격 비교",
+  url: DEFAULT_OG_IMAGE_PATH,
+  width: OG_IMAGE_WIDTH,
+  height: OG_IMAGE_HEIGHT,
+  alt: "도나와 — 크레스티드 게코 모프별 최저 호가 비교",
 };
 
 export const metadata: Metadata = {

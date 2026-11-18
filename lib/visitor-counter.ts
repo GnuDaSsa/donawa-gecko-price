@@ -19,7 +19,12 @@ export const VISIT_COOKIE_NAME = "donawa_visit";
 const DEFAULT_COUNTER_BASE_URL = "https://abacus.jasoncameron.dev";
 const DEFAULT_COUNTER_NAMESPACE = "donawa-gecko-price.vercel.app";
 const DEFAULT_COUNTER_KEY = "visits";
-const COUNTER_TIMEOUT_MS = 2000;
+const COUNTER_TIMEOUT_MS = 8000;
+/**
+ * 카운터 응답이 느려 값이 비어 나오던 문제 때문에 응답 시간을 8초까지 기다린다.
+ * 읽기는 한 번 더 시도하고, 방문 기록(hit)은 두 번 보내면 두 번 세지므로 재시도하지 않는다.
+ */
+const READ_ATTEMPTS = 2;
 
 const BOT_USER_AGENT_PATTERN =
   /bot|crawl|spider|slurp|preview|monitor|uptime|curl|wget|python-requests|httpclient|headless|lighthouse|gtmetrix|facebookexternalhit|vercel-screenshot/i;
@@ -54,7 +59,7 @@ export function counterEndpoint(mode: "get" | "hit"): string {
   return `${counterBaseUrl()}/${mode}/${encodeURIComponent(counterNamespace())}/${encodeURIComponent(counterKey())}`;
 }
 
-async function queryCounter(mode: "get" | "hit"): Promise<number | null> {
+async function queryOnce(mode: "get" | "hit"): Promise<number | null> {
   try {
     const response = await fetch(counterEndpoint(mode), {
       cache: "no-store",
@@ -63,12 +68,11 @@ async function queryCounter(mode: "get" | "hit"): Promise<number | null> {
     });
 
     if (response.status === 404 && mode === "get") {
-      lastKnownCount = 0;
       return 0;
     }
 
     if (!response.ok) {
-      return lastKnownCount;
+      return null;
     }
 
     const payload: unknown = await response.json();
@@ -76,14 +80,28 @@ async function queryCounter(mode: "get" | "hit"): Promise<number | null> {
     const value = typeof raw === "number" ? raw : Number(raw);
 
     if (!Number.isFinite(value) || value < 0) {
-      return lastKnownCount;
+      return null;
     }
 
-    lastKnownCount = Math.trunc(value);
-    return lastKnownCount;
+    return Math.trunc(value);
   } catch {
-    return lastKnownCount;
+    return null;
   }
+}
+
+async function queryCounter(mode: "get" | "hit"): Promise<number | null> {
+  const attempts = mode === "get" ? READ_ATTEMPTS : 1;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const value = await queryOnce(mode);
+
+    if (value !== null) {
+      lastKnownCount = value;
+      return value;
+    }
+  }
+
+  return lastKnownCount;
 }
 
 /** 현재 누적 방문 수를 읽는다. 카운터에 닿지 못하면 null. */

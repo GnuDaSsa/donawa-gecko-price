@@ -1532,6 +1532,61 @@ html.brand-intro-open {
   backdrop-filter: blur(8px);
 }
 
+/* 표를 카톡·커뮤니티로 바로 퍼가는 버튼. 배지 줄에 나란히 놓인다. */
+.share-button {
+  display: inline-flex;
+  min-height: 31px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid rgb(242 107 36 / 45%);
+  border-radius: 999px;
+  background: rgb(242 107 36 / 16%);
+  color: rgb(255 255 255 / 90%);
+  font-family: inherit;
+  font-size: 0.64rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.share-button:hover,
+.share-button:focus-visible,
+.share-button[data-state="copied"] {
+  border-color: rgb(242 107 36 / 90%);
+  background: rgb(242 107 36 / 30%);
+  color: var(--white);
+  outline: none;
+}
+
+.share-button--manual {
+  gap: 8px;
+  padding-right: 10px;
+  border-style: dashed;
+}
+
+.share-button__input {
+  width: min(46vw, 15rem);
+  border: 0;
+  background: transparent;
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.62rem;
+}
+
+.share-button__input:focus {
+  outline: none;
+}
+
+.share-button__hint {
+  color: rgb(255 255 255 / 55%);
+  font-size: 0.58rem;
+  white-space: nowrap;
+}
+
 .comparison-overview {
   display: grid;
   overflow: hidden;

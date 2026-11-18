@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getHomeMarketSnapshot } from "@/lib/data/repository";
 import { expoEvents, getKoreaDateKey } from "@/lib/expo-events";
+import { buildWebsiteJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -34,6 +35,10 @@ export default async function Home({ searchParams }: Props) {
     : availableMorphs;
   return (
     <main className="market-app">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: buildWebsiteJsonLd() }}
+      />
       <BrandIntro />
       <SiteHeader query={query} />
 

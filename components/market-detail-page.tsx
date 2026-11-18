@@ -6,9 +6,11 @@ import { ComparisonOverview } from "@/components/comparison-overview";
 import { DetailHeroImage } from "@/components/detail-hero-image";
 import { MorphListings } from "@/components/morph-listings";
 import { PriceDistribution } from "@/components/price-distribution";
+import { ShareButton } from "@/components/share-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getAvailableComparisonListings } from "@/lib/data/comparisons";
+import type { DetailShare } from "@/lib/share";
 import type { Listing, Morph, PlatformComparison } from "@/lib/types";
 
 export function MarketDetailPage({
@@ -16,11 +18,13 @@ export function MarketDetailPage({
   comparisons,
   pricePool,
   representativeImageUrl,
+  share,
 }: {
   subject: Morph;
   comparisons: PlatformComparison[];
   pricePool: Listing[];
   representativeImageUrl?: string;
+  share: DetailShare;
 }) {
   const availableComparisons = getAvailableComparisonListings(comparisons);
 
@@ -49,6 +53,7 @@ export function MarketDetailPage({
             <div className="detail-hero__badges" aria-label="현재 데이터 요약">
               <span><CircleCheck size={14} aria-hidden="true" /> 판매중 {pricePool.length}건</span>
               <span><Sparkles size={14} aria-hidden="true" /> {availableComparisons.length}개 사이트 비교</span>
+              <ShareButton title={share.title} text={share.text} url={share.url} />
             </div>
           </div>
         </section>
