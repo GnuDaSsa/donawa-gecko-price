@@ -5,14 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { HeaderBackButton } from "@/components/header-back-button";
+import { BrandIntro } from "@/components/brand-intro";
 
 export function SiteHeader({
   query = "",
+  home = false,
 }: {
   query?: string;
+  home?: boolean;
 }) {
   const pathname = usePathname();
-  const showBack = pathname !== "/";
+  const showBack = !home && pathname !== "/";
 
   return (
     <header className="site-header page-shell">
@@ -21,7 +24,7 @@ export function SiteHeader({
           {showBack && <HeaderBackButton />}
           <Link className="brand" href="/" aria-label="도나와 홈">
             <span className="brand__mark" aria-hidden="true" />
-            <span className="brand__name">도나와</span>
+            {home ? <BrandIntro /> : <span className="brand__name">도나와</span>}
           </Link>
         </div>
 

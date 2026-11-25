@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 import type { Database, Json } from "@/lib/database.types";
 import { buildTraitSubject } from "@/lib/data/catalog-traits";
@@ -232,12 +233,15 @@ export const getFilterableTraits = cache(async (): Promise<Trait[]> => {
   return rows.map(mapTrait);
 });
 
-export const getHomeMarketSnapshot = cache(async (): Promise<HomeMarketSnapshot> => {
+async function loadHomeMarketSnapshot(): Promise<HomeMarketSnapshot> {
+  const client = getSupabaseClient();
+  if (!client && process.env.VERCEL_ENV === "production") {
+    throw new Error("운영 홈을 생성하려면 공개 Supabase 연결 설정이 필요합니다.");
+  }
   const [morphs, keywordTraits] = await Promise.all([
     getVisibleMorphs(),
     getFilterableTraits(),
   ]);
-  const client = getSupabaseClient();
   const keywordTraitSlugs = new Set(keywordTraits.map(({ slug }) => slug));
   const morphIds = new Set(morphs.map(({ id }) => id));
 
@@ -380,7 +384,18 @@ export const getHomeMarketSnapshot = cache(async (): Promise<HomeMarketSnapshot>
     totalListings: comparable.length,
     platformCount: platformIds.size,
   };
-});
+}
+
+// Cache only the compact public summaries shared by the homepage, search and detail pages.
+const cachedMarketSnapshot = unstable_cache(
+  loadHomeMarketSnapshot,
+  ["home-market-v1", process.env.NEXT_PUBLIC_SUPABASE_URL ?? "local"],
+  { revalidate: 300 },
+);
+
+export const getHomeMarketSnapshot = cache(() =>
+  process.env.NEXT_PUBLIC_SUPABASE_URL ? cachedMarketSnapshot() : loadHomeMarketSnapshot(),
+);
 
 export const getMorphBySlug = cache(async (slug: string): Promise<Morph | undefined> => {
   const client = getSupabaseClient();

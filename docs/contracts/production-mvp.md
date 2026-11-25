@@ -55,6 +55,7 @@ Turn the mock-backed POC into a Korean-first MVP that compares real, current cre
 - The authorized Vercel review URL works against Supabase, while custom-domain promotion and broad public release remain blocked pending source/image-rights review.
 
 ## Verification Plan
+- 홈의 첫 HTML에 가격 카드를 포함하고 5분 주기로 재생성한다. `/?q=` 검색 결과는 기존 URL에서 서버가 렌더링한다. 최초 방문의 브랜드 애니메이션은 헤더 안에서 재생하며 목록과 검색을 즉시 사용할 수 있다.
 - Unit: parser, sanitization, filtering, pricing, freshness, and history transition tests.
 - Integration: connected Supabase migration plus repository, RLS, and history-upsert tests.
 - Collector: saved HTML fixtures and controlled live smoke against permitted public pages.
