@@ -38,6 +38,54 @@ describe("asking-price comparison", () => {
     expect(watertail?.listing).toBeNull();
   });
 
+  it("preserves the price pool and platform ranking when commercial priority changes", () => {
+    const activeShop = { ...platforms[0], isActive: true };
+    const firstShop = { ...activeShop, id: "a", name: "가 상점" };
+    const secondShop = { ...activeShop, id: "b", name: "나 상점" };
+    const emptyShop = { ...activeShop, id: "c", name: "다 상점" };
+    const morphId = "test-morph";
+    const seed = { ...listings[0], morphId };
+    const inventory = [
+      { ...seed, id: "cheapest", platform: firstShop, currentPrice: 100_000 },
+      { ...seed, id: "higher", platform: firstShop, currentPrice: 300_000 },
+      { ...seed, id: "second", platform: secondShop, currentPrice: 150_000 },
+      { ...seed, id: "sold", platform: emptyShop, currentPrice: 10_000, status: "SOLD" as const },
+    ];
+
+    // Feed the paid shop and its highest-commission listing first, as an ad feed might.
+    for (const sponsor of [undefined, firstShop, secondShop, emptyShop]) {
+      const shops = [firstShop, secondShop, emptyShop]
+        .map((shop) => ({ ...shop, isSponsored: shop.id === sponsor?.id }))
+        .sort((a, b) => Number(b.isSponsored) - Number(a.isSponsored));
+      const offers = inventory
+        .map((listing) => ({
+          ...listing,
+          platform: { ...listing.platform, isSponsored: listing.platform.id === sponsor?.id },
+          commission: listing.platform.id === sponsor?.id ? listing.currentPrice * 0.1 : 0,
+        }))
+        .sort((a, b) => b.commission - a.commission);
+
+      const pool = filterComparableListings(offers, morphId);
+      expect(pool.map(({ id, currentPrice }) => [id, currentPrice])).toEqual([
+        ["cheapest", 100_000],
+        ["second", 150_000],
+        ["higher", 300_000],
+      ]);
+      const rows = buildPlatformComparisons(shops, offers, morphId);
+      expect(rows.map(({ platform, listing }) => [platform.id, listing?.id ?? null])).toEqual([
+        [firstShop.id, "cheapest"],
+        [secondShop.id, "second"],
+        [emptyShop.id, null],
+      ]);
+
+      const tiedOffers = offers.map((listing) =>
+        listing.id === "second" ? { ...listing, currentPrice: 100_000 } : listing,
+      );
+      const tiedRows = buildPlatformComparisons(shops, tiedOffers, morphId);
+      expect(tiedRows.map(({ platform }) => platform.name)).toEqual(["가 상점", "나 상점", "다 상점"]);
+    }
+  });
+
   it("uses the same one-lowest-listing-per-platform set for alternate views", () => {
     const comparisons = buildPlatformComparisons(
       platforms,

@@ -2,6 +2,13 @@
   "currentGoal": "이슈 #15의 첫 방문에서 실제 가격 목록을 바로 표시한다.",
   "status": "verified",
   "currentContract": "docs/contracts/production-mvp.md",
+  "issueVerifications": {
+    "11": {
+      "lastCommand": "npm test -- tests/pricing.test.ts, npm test, npm run lint",
+      "lastResult": "pass",
+      "notes": "가격 비교 테스트 6개와 전체 테스트 147개, 린트 통과. 광고주와 수수료 우선순위를 바꿔도 비교 대상, 최저 호가, 동률 정렬이 유지된다. 광고 집행은 월 방문자와 콘텐츠 신뢰도 검토 이후에 결정한다."
+    }
+  },
   "blockers": [],
   "nextStep": "GitHub 검증을 거친 뒤 승인된 기존 Vercel 주소에서 실제 가격 목록과 검색을 다시 측정한다.",
   "lastUpdated": "2026-11-26T00:56:00+09:00",
