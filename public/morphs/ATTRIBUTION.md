@@ -2,7 +2,7 @@
 
 These images are used only as morph-category navigation artwork in this private local MVP. They do **not** depict or certify any individual listing. Every processed asset is a 1600×1120 WebP with the complete source photo contained inside a consistent artboard.
 
-The source photos are publicly viewable examples, but public availability does not grant reuse rights. Permission/license has not been verified. Before any public deployment, obtain permission from the copyright holder or replace every rights-pending asset with an owned/licensed image.
+Review date: 2026-11-26. Three source files have documented reuse licenses. Their WebP versions contain the entire photograph, resized and centered on a 1600×1120 background. Each WebP retains the license listed for its source. The remaining 17 entries have no verified reuse permission on file and require clearance or replacement.
 
 | Local asset | Morph | Source page | Source/credit note | Rights state |
 | --- | --- | --- | --- | --- |
@@ -11,9 +11,9 @@ The source photos are publicly viewable examples, but public availability does n
 | `lilly-axanthic.webp` | Lilly Axanthic | https://www.feedle.me/pet/6c4d0ac9-af60-45e8-b4fa-9f352db02353 | Feedle listing image | Rights pending; private MVP only |
 | `cappuccino.webp` | Cappuccino | https://www.feedle.me/pet/842eb1e0-30cf-49ce-ac9f-0e86bc65ba9d | Feedle listing image | Rights pending; private MVP only |
 | `frappuccino.webp` | Frappuccino | https://kiwo.kr/product/11884 | Kiwo product image | Rights pending; private MVP only |
-| `dalmatian.webp` | Dalmatian | https://watertail.com/product/cremale-4 | WaterTail sold-listing image | Rights pending; private MVP only |
-| `harlequin.webp` | Harlequin | https://kiwo.kr/product/11842 | Kiwo product image | Rights pending; private MVP only |
-| `pinstripe.webp` | Pinstripe | https://www.feedle.me/pet/316461f2-fb28-4ff4-ba28-080baa4df8a6 | Feedle listing image | Rights pending; private MVP only |
+| `dalmatian.webp` | Dalmatian | [Rhacodactylus ciliatus "dalmatien"](https://commons.wikimedia.org/wiki/File:Rhacodactylus_ciliatus_%22dalmatien%22.jpg) | Nathouf, original photograph of a Dalmatian | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) |
+| `harlequin.webp` | Harlequin | [Gekon orzęsiony, Correlophus ciliatus Harlequin](https://commons.wikimedia.org/wiki/File:Gekon_orz%C4%99siony,_Correlophus_ciliatus_Harlequin.jpg) | Dr.Zoidberg2186, original photograph of a Harlequin | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| `pinstripe.webp` | Pinstripe (partial) | [Correlophus ciliatus partial pinstripe](https://commons.wikimedia.org/wiki/File:Correlophus_ciliatus_partial_pinstripe.jpg) | Papa webo, original photograph of a partial pinstripe | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | `phantom.webp` | Phantom | https://kiwo.kr/product/11825 | Kiwo product image | Rights pending; private MVP only |
 | `sable.webp` | Sable | https://www.feedle.me/pet/02660b50-3942-4d4d-8375-d6bd40130aa7 | Feedle listing image | Rights pending; private MVP only |
 | `soft-scale.webp` | Soft Scale | https://community.morphmarket.com/t/crested-gecko-morph-trait-guide/19766 | MorphMarket Community guide; nearby page credit identifies Michelle / FoxReptiles. Exact figure credit must be reconfirmed before reuse. | Rights pending; private MVP only |
