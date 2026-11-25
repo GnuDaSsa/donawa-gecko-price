@@ -21,7 +21,7 @@ export function formatCheckedAt(listing: Listing): string {
     return "사용자 등록";
   }
 
-  const date = new Date(listing.lastCheckedAt);
+  const date = new Date(listing.lastSeenAt);
   const formatted = new Intl.DateTimeFormat("ko-KR", {
     month: "numeric",
     day: "numeric",

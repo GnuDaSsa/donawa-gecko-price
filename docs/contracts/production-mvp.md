@@ -34,6 +34,7 @@ Turn the mock-backed POC into a Korean-first MVP that compares real, current cre
 - The existing local collector secret is required once when provisioning the encrypted scheduler Vault entries on a new Supabase project; the connected MVP project is already configured.
 
 ## Acceptance Criteria
+- 홈·모프·키워드·매장별 현재 호가와 매물 수에는 최근 14일 이내 원문에서 판매 중임을 확인한 고정가 매물만 포함한다. 기준은 마지막 관측 시각(`last_seen_at`)이다. 재확인 시도만으로 이 기간을 연장하지 않는다. 가격 분포는 중앙값을 먼저 표시하고 전체 평균을 함께 제공한다.
 - The production UI reads real normalized records from Supabase and clearly labels asking prices and freshness.
 - The price/image views show the same price-sorted platform-minimum records, while the separately labelled distribution uses the full active fixed-price pool and exposes exact quartiles and outliers.
 - The full-listing catalog shows every comparable current listing, supports per-platform filtering, and paginates without changing the comparison population.

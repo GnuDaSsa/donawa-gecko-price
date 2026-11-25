@@ -1,13 +1,13 @@
 {
-  "currentGoal": "이슈 #15의 첫 방문에서 실제 가격 목록을 바로 표시한다.",
+  "currentGoal": "이슈 #14의 오래된 매물을 현재 호가 비교에서 제외한다.",
   "status": "verified",
   "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "GitHub 검증을 거친 뒤 승인된 기존 Vercel 주소에서 실제 가격 목록과 검색을 다시 측정한다.",
-  "lastUpdated": "2026-11-26T00:56:00+09:00",
+  "nextStep": "가격 비교 변경을 PR에서 검토한다. 운영 DB의 404·410 정리는 #8, 첫 로딩 수정본의 운영 확인은 #15에서 추적한다.",
+  "lastUpdated": "2026-11-26T03:49:00+09:00",
   "verification": {
-    "lastCommand": "npm test, npm run lint, npm run build, node scripts/check-home-prerender.mjs, Chrome 홈 및 검색 확인",
+    "lastCommand": "npm test, npm run lint, npm run build -- --webpack, node scripts/check-home-prerender.mjs, 모바일 홈과 상세 화면 검증",
     "lastResult": "pass",
-    "notes": "기존 운영 첫 응답 10.61초, Chrome 가격 카드 표시 12.08초·13.04초. 테스트 146개 통과. 빌드 산출물에서 홈 300초 ISR와 첫 HTML 가격 확인. 로컬 테스트 데이터에서 검색 URL·입력값·결과 확인."
+    "notes": "운영 트라이컬러의 3,000원 링크와 제보된 키워 원문 두 건에서 410 확인. 14일 경계와 실패한 재확인에 대한 회귀 테스트 포함 147개 통과. 검증용 매물로 홈·모프·키워드·공유 제목의 최저가 65,000원, 중앙값 80,000원, 평균 381,667원과 오래된 링크 제외를 확인했다."
   }
 }

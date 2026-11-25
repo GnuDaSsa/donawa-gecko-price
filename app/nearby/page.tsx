@@ -5,6 +5,8 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getNearbyShopLocations } from "@/lib/data/repository";
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "내 주변 매장",
   description: "크레스티드 게코 판매처 거리순·배송·온라인 매물",

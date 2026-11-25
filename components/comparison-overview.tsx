@@ -1,5 +1,6 @@
 import { ExternalLink, TrendingDown } from "lucide-react";
 
+import { CURRENT_PRICE_WINDOW_DAYS } from "@/lib/data/comparisons";
 import { buildPriceDistribution } from "@/lib/data/price-statistics";
 import { formatCheckedAt, formatKRW } from "@/lib/format";
 import type { Listing, Morph, PlatformComparison } from "@/lib/types";
@@ -57,7 +58,7 @@ export function ComparisonOverview({
           </>
         ) : (
           <p className="comparison-overview__empty">
-            비교 가능한 고정가 없음
+            최근 {CURRENT_PRICE_WINDOW_DAYS}일 동안 확인된 고정가 매물이 없습니다.
           </p>
         )}
       </div>
@@ -85,7 +86,7 @@ export function ComparisonOverview({
           </div>
         </dl>
         <p className="comparison-overview__notice">
-          공개 호가 · 거래조건 원문 확인
+          최근 {CURRENT_PRICE_WINDOW_DAYS}일 내 판매를 확인한 매물의 공개 호가입니다. 거래 조건은 원문에서 확인하세요.
         </p>
       </div>
     </section>
