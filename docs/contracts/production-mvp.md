@@ -54,6 +54,18 @@ Turn the mock-backed POC into a Korean-first MVP that compares real, current cre
 - Automated tests, lint, build, connected-database checks, collector fixture tests, and local HTTP/image-rendering QA pass.
 - The authorized Vercel review URL works against Supabase, while custom-domain promotion and broad public release remain blocked pending source/image-rights review.
 
+## 광고 표기와 가격 비교
+
+월 방문자 수를 측정하고 매물 출처와 가격을 신뢰할 수 있는지 검토한 뒤 수익화 여부를 결정한다. 하단의 누적 방문 수는 월 방문자 수와 별개다.
+
+| 수익 경로 | 이용자에게 보이는 표기와 위치 | 가격 비교 원칙 |
+| --- | --- | --- |
+| 파충류 용품 제휴 | 사육장·먹이 등 용품 링크 옆에 “제휴 링크 · 구매 시 도나와가 수수료를 받습니다”를 표시한다. | 용품과 수수료는 개체 매물 수, 최저 호가, 가격 분포 계산에서 제외한다. |
+| 입점샵 유료 노출 | 비교 목록 밖의 별도 영역에 “광고”와 광고주 이름을 표시한다. | 광고주의 실제 매물에는 다른 샵과 같은 포함 조건과 정렬 기준을 적용한다. 광고 전용 카드는 매물로 집계하지 않는다. |
+| 애드센스 | 광고 영역에 “광고”를 표시하고 모바일 첫 화면 아래에 배치한다. | 광고가 목록 행을 대체하거나 최저 호가와 원문 링크를 가리지 않도록 한다. |
+
+같은 공개 매물에 대해서는 제휴 여부, 노출료, 광고 매출이 달라져도 비교 결과가 같아야 한다. 모프별 비교 대상은 판매 중인 고정가 매물이고, 각 활성 플랫폼의 최저 호가를 낮은 가격부터 표시한다. 플랫폼별 최저 호가가 같으면 기존 플랫폼 이름순을 적용한다. 가격 분포는 비교 대상 전체의 호가로 계산한다.
+
 ## Verification Plan
 - 홈의 첫 HTML에 가격 카드를 포함하고 5분 주기로 재생성한다. `/?q=` 검색 결과는 기존 URL에서 서버가 렌더링한다. 최초 방문의 브랜드 애니메이션은 헤더 안에서 재생하며 목록과 검색을 즉시 사용할 수 있다.
 - Unit: parser, sanitization, filtering, pricing, freshness, and history transition tests.
