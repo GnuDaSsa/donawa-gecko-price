@@ -1,13 +1,13 @@
 {
-  "currentGoal": "닷츠·피클의 GitHub 제보를 Codex가 접수하고 검증된 PR로 인계한다.",
-  "status": "complete",
-  "currentContract": "docs/contracts/reporter-issues.md",
+  "currentGoal": "이슈 #15의 첫 방문에서 실제 가격 목록을 바로 표시한다.",
+  "status": "verified",
+  "currentContract": "docs/contracts/production-mvp.md",
   "blockers": [],
-  "nextStep": "30분마다 가장 오래된 처리 가능 이슈 한 건을 확인한다. 운영 DB·배포 관련 기존 작업은 #8에서 추적한다.",
-  "lastUpdated": "2026-11-26T00:02:00+09:00",
+  "nextStep": "GitHub 검증을 거친 뒤 승인된 기존 Vercel 주소에서 실제 가격 목록과 검색을 다시 측정한다.",
+  "lastUpdated": "2026-11-26T00:56:00+09:00",
   "verification": {
-    "lastCommand": "npm test && npm run lint && npm run --silent issues:next",
+    "lastCommand": "npm test, npm run lint, npm run build, node scripts/check-home-prerender.mjs, Chrome 홈 및 검색 확인",
     "lastResult": "pass",
-    "notes": "21개 파일의 테스트 146개와 ESLint 통과. 실제 대기열의 첫 후보 #6 확인. 양식과 워크플로 YAML 파싱 통과. Windows 작업 폴더에서 Turbopack CSS 자식 프로세스 오류가 발생했으며, 같은 소스를 영문 임시 경로에 두고 npm ci 및 npm run build를 실행해 타입 검사와 프로덕션 빌드 통과."
+    "notes": "기존 운영 첫 응답 10.61초, Chrome 가격 카드 표시 12.08초·13.04초. 테스트 146개 통과. 빌드 산출물에서 홈 300초 ISR와 첫 HTML 가격 확인. 로컬 테스트 데이터에서 검색 URL·입력값·결과 확인."
   }
 }
