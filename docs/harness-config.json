@@ -13,5 +13,10 @@
   },
   "rules": {
     "maxRepeatedFailures": 2
+  },
+  "issueIntake": {
+    "repository": "GnuDaSsa/donawa-gecko-price",
+    "authorLogins": ["GnuDaSsa"],
+    "holdLabel": "codex:hold"
   }
 }

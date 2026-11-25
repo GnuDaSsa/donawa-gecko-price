@@ -1,0 +1,17 @@
+name: 닷츠·피클 작업 요청
+description: 도나와에서 확인한 문제 또는 개선 요청을 Codex에 접수합니다.
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: 확인한 현상 또는 요청
+      description: 어느 화면이나 기능에서 무엇을 확인했는지 적어 주세요. 재현 경로나 측정값이 있으면 함께 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 완료 기준
+      description: 수정 후 어떤 동작이나 결과를 확인하면 되는지 적어 주세요.
+    validations:
+      required: true

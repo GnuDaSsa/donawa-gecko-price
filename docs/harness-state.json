@@ -1,13 +1,13 @@
 {
-  "currentGoal": "Sprint 1: 1,000행 절단 버그, 오래된 ACTIVE 재확인(reaper), MyBreeders 경로 복구, 박람회 갱신, robots/sitemap/OG 메타데이터 추가.",
+  "currentGoal": "닷츠·피클의 GitHub 제보를 Codex가 접수하고 검증된 PR로 인계한다.",
   "status": "complete",
-  "currentContract": "docs/contracts/production-mvp.md",
+  "currentContract": "docs/contracts/reporter-issues.md",
   "blockers": [],
-  "nextStep": "Supabase 마이그레이션(20261114121000_add_stale_listing_reaper.sql) 적용 → collect-public-shops·collect-feedle 재배포 → Vercel 재배포 후 /robots.txt·/sitemap.xml 확인. 남은 Sprint 2 항목은 이슈 #6~#8.",
-  "lastUpdated": "2026-11-14T12:30:00+09:00",
+  "nextStep": "30분마다 가장 오래된 처리 가능 이슈 한 건을 확인한다. 운영 DB·배포 관련 기존 작업은 #8에서 추적한다.",
+  "lastUpdated": "2026-11-26T00:02:00+09:00",
   "verification": {
-    "lastCommand": "npm test && npm run lint && npx tsc --noEmit && npm run build; next start 스모크 테스트(/, /morph/lilly-white, /nearby, robots.txt, sitemap.xml)",
+    "lastCommand": "npm test && npm run lint && npm run --silent issues:next",
     "lastResult": "pass",
-    "notes": "19개 테스트 파일 122개 테스트 통과(pagination 5, repository-pagination 4, stale-recheck 6 신규). ESLint·tsc·Next.js 16.3 프로덕션 빌드 통과. /robots.txt·/sitemap.xml 정적 생성 확인(sitemap 1시간 revalidate). next start에서 홈 og:*·canonical, 모프 상세 title·canonical, 신규 대전 박람회 카드 렌더 확인. Edge Function 두 개는 esbuild 번들 검사로 문법 확인했고, Deno 런타임·실DB 실행은 배포 후 이슈 #8에서 검증한다."
+    "notes": "21개 파일의 테스트 146개와 ESLint 통과. 실제 대기열의 첫 후보 #6 확인. 양식과 워크플로 YAML 파싱 통과. Windows 작업 폴더에서 Turbopack CSS 자식 프로세스 오류가 발생했으며, 같은 소스를 영문 임시 경로에 두고 npm ci 및 npm run build를 실행해 타입 검사와 프로덕션 빌드 통과."
   }
 }

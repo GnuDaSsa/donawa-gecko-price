@@ -96,3 +96,6 @@
 - 구조화 데이터는 `lib/structured-data.ts`: 홈은 `WebSite`, 상세는 `Product` + `AggregateOffer`(lowPrice/highPrice/offerCount). 문자열은 `<`를 이스케이프해서 넣는다.
 - 검색 제출은 IndexNow 하나로 간다. 키 파일은 `public/{key}.txt`, 제출은 `POST https://api.indexnow.org/indexnow`(전 URL 배치)와 네이버 직접 엔드포인트 `https://searchadvisor.naver.com/indexnow`. 네이버·빙·얀덱스·Seznam·Yep이 같은 제출을 공유한다. 구글 sitemap ping은 404로 폐지됐고, 구글·네이버 서치어드바이저 등록은 계정 로그인이 필요하다.
 - `/api/visit` 카운터 대기는 8초다. 읽기는 두 번 시도하고, 방문 기록(hit)은 두 번 세지 않도록 재시도하지 않는다.
+
+## 닷츠·피클 제보 (2026-11-25)
+- 두 도구가 도나와 이슈를 올리면 Codex가 수정·검증하고 PR로 인계한다. 재사용할 접수 설정은 `docs/harness-config.json`, 처리 절차는 [이슈 운영 방침](reporter-issues.md)에 있다.
