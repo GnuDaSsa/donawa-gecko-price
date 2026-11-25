@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 
 import type { Database, Json } from "@/lib/database.types";
 import { buildTraitSubject } from "@/lib/data/catalog-traits";
+import { CURRENT_PRICE_WINDOW_DAYS } from "@/lib/data/comparisons";
 import { selectMidMarketHomeImage } from "@/lib/data/home-market";
 import { chunkIds, fetchAllPages } from "@/lib/data/pagination";
 import { listings as mockListings } from "@/lib/data/listings";
@@ -49,7 +50,7 @@ type NearbyListingRow = {
   original_title: string;
   original_url: string;
   current_price: number;
-  last_checked_at: string;
+  last_seen_at: string;
   morph: { name_ko: string } | null;
 };
 type MarketListingRow = {
@@ -63,6 +64,11 @@ type MarketListingRow = {
 };
 
 const fallbackMorphBySlug = new Map(mockMorphs.map((morph) => [morph.slug, morph]));
+
+// A failed recheck advances last_checked_at; only a successful observation advances last_seen_at.
+const getObservationCutoff = cache(() =>
+  new Date(Date.now() - CURRENT_PRICE_WINDOW_DAYS * 86_400_000).toISOString(),
+);
 
 function aliases(value: Json): string[] {
   return Array.isArray(value)
@@ -262,6 +268,7 @@ async function loadHomeMarketSnapshot(): Promise<HomeMarketSnapshot> {
           `)
           .eq("status", "ACTIVE")
           .eq("price_type", "FIXED")
+          .gte("last_seen_at", getObservationCutoff())
           .not("current_price", "is", null)
           .order("id", { ascending: true });
 
@@ -389,7 +396,7 @@ async function loadHomeMarketSnapshot(): Promise<HomeMarketSnapshot> {
 // Cache only the compact public summaries shared by the homepage, search and detail pages.
 const cachedMarketSnapshot = unstable_cache(
   loadHomeMarketSnapshot,
-  ["home-market-v1", process.env.NEXT_PUBLIC_SUPABASE_URL ?? "local"],
+  ["home-market-v2", process.env.NEXT_PUBLIC_SUPABASE_URL ?? "local"],
   { revalidate: 300 },
 );
 
@@ -442,6 +449,7 @@ export const getComparableListings = cache(async (morphId: string): Promise<List
     .eq("morph_id", morphId)
     .eq("status", "ACTIVE")
     .eq("price_type", "FIXED")
+    .gte("last_seen_at", getObservationCutoff())
     .not("current_price", "is", null)
     .order("current_price", { ascending: true })
     .order("id", { ascending: true });
@@ -508,6 +516,7 @@ export const getComparableListingsByTraitSlug = cache(
 
     // 키워드 하나가 1,000건을 넘으면 `.in()` 한 번으로는 다시 1,000행에서 잘리고
     // URL 길이도 위험해진다. id를 배치로 나눠 각 배치를 전부 페이지네이션한다.
+    const cutoff = getObservationCutoff();
     const pages = await Promise.all(
       chunkIds(listingIds).map((ids) => {
         const query = client
@@ -523,6 +532,7 @@ export const getComparableListingsByTraitSlug = cache(
           .in("id", ids)
           .eq("status", "ACTIVE")
           .eq("price_type", "FIXED")
+          .gte("last_seen_at", cutoff)
           .not("current_price", "is", null)
           .order("current_price", { ascending: true })
           .order("id", { ascending: true });
@@ -645,6 +655,7 @@ export const getNearbyShopLocations = cache(async (): Promise<NearbyShopLocation
     ),
   );
 
+  const cutoff = getObservationCutoff();
   const listingPages = await Promise.all(
     chunkIds(platformIds).map((ids) =>
       fetchAllPages<NearbyListingRow>(
@@ -657,12 +668,13 @@ export const getNearbyShopLocations = cache(async (): Promise<NearbyShopLocation
               original_title,
               original_url,
               current_price,
-              last_checked_at,
+              last_seen_at,
               morph:morphs!listings_morph_id_fkey(name_ko)
             `)
             .in("platform_id", ids)
             .eq("status", "ACTIVE")
             .eq("price_type", "FIXED")
+            .gte("last_seen_at", cutoff)
             .not("current_price", "is", null)
             .order("current_price", { ascending: true })
             .order("id", { ascending: true })
@@ -732,7 +744,7 @@ export const getNearbyShopLocations = cache(async (): Promise<NearbyShopLocation
         price: listing.current_price,
         originalUrl: listing.original_url,
         morphName: listing.morph?.name_ko,
-        checkedAt: listing.last_checked_at,
+        checkedAt: listing.last_seen_at,
       })),
     } satisfies NearbyShopLocation;
   }).sort((left, right) =>

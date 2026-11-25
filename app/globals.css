@@ -1685,18 +1685,19 @@ button {
   word-break: keep-all;
 }
 
-.price-distribution__mean {
+.price-distribution__summary {
   flex: 0 0 auto;
   text-align: right;
 }
 
-.price-distribution__mean span {
+.price-distribution__summary span,
+.price-distribution__summary small {
   display: block;
   color: var(--ink-faint);
   font-size: 0.63rem;
 }
 
-.price-distribution__mean strong {
+.price-distribution__summary strong {
   display: block;
   margin-top: 5px;
   color: var(--ink);
@@ -3065,7 +3066,7 @@ button {
     flex-direction: column;
   }
 
-  .price-distribution__mean {
+  .price-distribution__summary {
     text-align: left;
   }
 

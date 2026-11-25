@@ -60,9 +60,10 @@ export function PriceDistribution({ listings }: { listings: Listing[] }) {
         <div>
           <h2 id="price-distribution-title">현재 매물 가격 분포</h2>
         </div>
-        <div className="price-distribution__mean">
-          <span>평균 호가</span>
-          <strong>{roundedKRW(stats.mean)}</strong>
+        <div className="price-distribution__summary">
+          <span>호가 중앙값</span>
+          <strong>{roundedKRW(stats.median)}</strong>
+          <small>평균 {roundedKRW(stats.mean)} · 전체 매물 기준</small>
         </div>
       </div>
 

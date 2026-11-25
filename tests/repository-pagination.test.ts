@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 /**
  * A deliberately small PostgREST stand-in: it stores rows per table, honours
@@ -27,6 +27,10 @@ function createFakeSupabase(tables: Record<string, unknown[]>) {
         return api;
       },
       neq: () => api,
+      gte: (column: string, value: string) => {
+        predicates.push((row) => Date.parse(String(row[column])) >= Date.parse(value));
+        return api;
+      },
       not: () => api,
       in: (column: string, values: unknown[]) => {
         filters.push([column, `in:${values.length}`]);
@@ -79,6 +83,7 @@ function marketListingRows(count: number) {
     status: "ACTIVE",
     price_type: "FIXED",
     current_price: 100_000 + index,
+    last_seen_at: "2026-11-13T00:00:00Z",
     image_url: null,
     original_title: `릴리화이트 ${index}`,
     platform: { id: "platform-1", is_active: true },
@@ -86,12 +91,52 @@ function marketListingRows(count: number) {
   }));
 }
 
+beforeEach(() => vi.setSystemTime(new Date("2026-11-26T00:00:00Z")));
+
 afterEach(() => {
   fake.current = null;
+  vi.useRealTimers();
   vi.resetModules();
 });
 
 describe("repository pagination", () => {
+  it("excludes expired observations even after a fresh check attempt across current price views", async () => {
+    const { getHomeMarketSnapshot, getComparableListings, getComparableListingsByTraitSlug, getNearbyShopLocations } =
+      await import("@/lib/data/repository");
+    const trait = { id: "trait-tricolor", slug: "tricolor", name_ko: "트라이컬러", is_filterable: true };
+    const base = {
+      ...marketListingRows(1)[0],
+      platform_id: "platform-1",
+      listing_traits: [{ trait }],
+      last_checked_at: "2026-11-26T00:00:00Z",
+    };
+    const rows = [
+      { ...base, id: "expired", current_price: 3_000, last_seen_at: "2026-11-11T23:59:59.999Z" },
+      { ...base, id: "boundary", current_price: 65_000, last_seen_at: "2026-11-12T00:00:00Z" },
+      { ...base, id: "deleted", current_price: 1_000, status: "DELETED" },
+    ];
+    fake.current = createFakeSupabase({
+      morphs: morphRows(),
+      traits: [trait],
+      listings: rows,
+      listing_traits: rows.map(({ id }) => ({ listing_id: id, trait_id: trait.id })),
+      shop_locations: [{ id: "shop", platform_id: base.platform_id, platform: base.platform, is_active: true }],
+    }).client;
+
+    const snapshot = await getHomeMarketSnapshot();
+    expect(snapshot.totalListings).toBe(1);
+    expect(snapshot.morphs.map(({ href, minPrice }) => [href, minPrice])).toEqual(
+      expect.arrayContaining([["/morph/lilly-white", 65_000], ["/trait/tricolor", 65_000]]),
+    );
+    const morphPool = await getComparableListings(MORPH_ID);
+    const traitPool = await getComparableListingsByTraitSlug("tricolor");
+    expect(morphPool.map(({ id }) => id)).toEqual(["boundary"]);
+    expect(traitPool.map(({ id }) => id)).toEqual(["boundary"]);
+    const shops = await getNearbyShopLocations();
+    expect(shops[0]?.minPrice).toBe(65_000);
+    expect(shops[0]?.previewListings[0]?.checkedAt).toBe("2026-11-12T00:00:00Z");
+  });
+
   it("counts every home market listing instead of stopping at 1,000 rows", async () => {
     const { getHomeMarketSnapshot } = await import("@/lib/data/repository");
     const supabase = createFakeSupabase({
