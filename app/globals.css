@@ -83,116 +83,26 @@ button {
   white-space: nowrap;
 }
 
-html.brand-intro-open {
-  overflow: hidden;
-}
-
-/* Donawa brand landing */
+/* Animate the header wordmark without covering the market. */
 .brand-intro {
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  display: grid;
-  overflow: hidden;
-  place-items: center;
-  background:
-    linear-gradient(90deg, transparent 49.94%, rgb(24 25 22 / 6%) 50%, transparent 50.06%),
-    linear-gradient(0deg, transparent 49.94%, rgb(24 25 22 / 4%) 50%, transparent 50.06%),
-    radial-gradient(circle at 50% 48%, #fffefb 0, #fffaf3 34%, #f3d3b8 100%);
-  color: var(--ink);
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    transform 650ms cubic-bezier(0.76, 0, 0.24, 1),
-    opacity 560ms ease,
-    border-radius 650ms ease;
-}
-
-.brand-intro--exiting {
-  border-radius: 0 0 50% 50%;
-  opacity: 0.2;
-  transform: translateY(-105%);
-}
-
-.brand-intro__skip {
-  position: absolute;
-  z-index: 3;
-  top: clamp(20px, 4vw, 42px);
-  right: clamp(20px, 4vw, 48px);
-  min-height: 38px;
-  padding: 0 14px;
-  border: 1px solid rgb(24 25 22 / 15%);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 46%);
-  color: var(--ink-soft);
-  cursor: pointer;
-  font-size: 0.67rem;
-  font-weight: 720;
-  backdrop-filter: blur(10px);
-}
-
-.brand-intro__skip:hover,
-.brand-intro__skip:focus-visible {
-  border-color: var(--ink);
-  color: var(--ink);
-  outline: none;
-}
-
-.brand-intro__orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.brand-intro__orb--one {
-  top: -18vw;
-  left: -10vw;
-  width: 44vw;
-  height: 44vw;
-  border: 1px solid rgb(242 107 36 / 13%);
-  box-shadow: inset 0 0 0 5vw rgb(255 255 255 / 12%);
-  animation: brand-orb-drift 5s ease-in-out infinite alternate;
-}
-
-.brand-intro__orb--two {
-  right: -8vw;
-  bottom: -24vw;
-  width: 50vw;
-  height: 50vw;
-  background: rgb(135 152 118 / 11%);
-  filter: blur(2px);
-  animation: brand-orb-drift 6s ease-in-out infinite alternate-reverse;
-}
-
-.brand-intro__center {
   position: relative;
-  z-index: 1;
-  display: grid;
-  justify-items: center;
-  text-align: center;
-}
-
-.brand-intro__eyebrow {
-  margin: 0 0 clamp(22px, 3vw, 34px);
-  color: var(--orange-dark);
-  font-size: clamp(0.58rem, 1vw, 0.72rem);
-  font-weight: 800;
-  letter-spacing: 0.23em;
-  opacity: 0;
-  animation: brand-copy-enter 540ms ease 180ms forwards;
 }
 
 .brand-intro__wordmark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(5.1rem, 16vw, 11.5rem);
-  font-weight: 890;
-  line-height: 0.9;
-  letter-spacing: -0.085em;
-  opacity: 0;
-  transform: translateY(16px) scale(0.96);
-  animation: brand-logo-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) 270ms forwards;
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .brand-intro[data-playing] .brand-intro__label {
+    visibility: hidden;
+  }
+
+  .brand-intro[data-playing] .brand-intro__wordmark {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 .brand-intro__syllable {
@@ -213,7 +123,7 @@ html.brand-intro-open {
   border-top-width: 0.075em;
   border-bottom-width: 0.075em;
   border-left-width: 0.075em;
-  animation: brand-consonant-settle 2.5s cubic-bezier(0.68, -0.24, 0.22, 1.2) forwards;
+  animation: brand-consonant-settle 850ms cubic-bezier(0.68, -0.24, 0.22, 1.2) forwards;
 }
 
 .brand-intro__vowel {
@@ -224,7 +134,7 @@ html.brand-intro-open {
   height: 0.78em;
   transform: rotate(0);
   transform-origin: 50% 50%;
-  animation: brand-vowel-turn 2.5s cubic-bezier(0.68, -0.3, 0.22, 1.28) forwards;
+  animation: brand-vowel-turn 850ms cubic-bezier(0.68, -0.3, 0.22, 1.28) forwards;
 }
 
 .brand-intro__vowel-main,
@@ -252,58 +162,6 @@ html.brand-intro-open {
 .brand-intro__rest {
   display: inline-block;
   margin-left: -0.02em;
-}
-
-.brand-intro__tagline {
-  margin: clamp(25px, 4vw, 42px) 0 0;
-  color: var(--ink-soft);
-  font-size: clamp(0.82rem, 1.7vw, 1.05rem);
-  font-weight: 620;
-  letter-spacing: -0.025em;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: brand-copy-enter 580ms ease 1.65s forwards;
-}
-
-.brand-intro__tagline strong {
-  color: var(--orange-dark);
-  font-weight: 820;
-}
-
-.brand-intro__progress {
-  position: absolute;
-  bottom: clamp(26px, 5vw, 52px);
-  left: 50%;
-  overflow: hidden;
-  width: min(180px, 38vw);
-  height: 2px;
-  border-radius: 999px;
-  background: rgb(24 25 22 / 10%);
-  transform: translateX(-50%);
-}
-
-.brand-intro__progress span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--orange);
-  transform: translateX(-100%);
-  animation: brand-progress 2.85s linear forwards;
-}
-
-@keyframes brand-logo-enter {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes brand-copy-enter {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @keyframes brand-consonant-settle {
@@ -337,18 +195,6 @@ html.brand-intro-open {
     top: 0.34em;
     left: 0.27em;
     transform: rotate(-90deg);
-  }
-}
-
-@keyframes brand-progress {
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes brand-orb-drift {
-  to {
-    transform: translate3d(2.5vw, -1.5vw, 0) scale(1.03);
   }
 }
 

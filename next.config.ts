@@ -26,6 +26,16 @@ const listingImageHosts = [
 ] as const;
 
 const nextConfig: NextConfig = {
+  // Preserve /?q= links without making plain / dynamic.
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: "/", has: [{ type: "query", key: "q" }], destination: "/search" },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
   async headers() {
     return [
       {
