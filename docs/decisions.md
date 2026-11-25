@@ -304,3 +304,7 @@ The first production run of this decision reviewed the 20 newest non-notice arti
 - Context: the last listed expo (청주, 11/14–15) expired, which would leave the home carousel empty from 11/16.
 - Decision: keep past events in `lib/expo-events.ts` as a record (visibility is already date-filtered) and add only events whose official organizer/venue/directory page states the dates and venue. Mirror the official poster into `public/expos/` and record source page, original image URL, and check date in `ATTRIBUTION.md`.
 - Consequences: the carousel stays populated through December without inventing events, and each new banner can be traced back to a public official source.
+
+## 2026-11-25 — 공유 GitHub 계정의 이슈 전체를 접수
+- 닷츠·피클을 구분하지 않고 `GnuDaSsa`가 작성한 열린 이슈 전체를 접수한다. 기존 #14·#15와 새 제보에 같은 기준을 적용한다.
+- 열린 이슈를 읽는 명령은 로컬 Codex에서 수동 호출하거나 주기적으로 호출할 수 있다. GitHub Actions용 모델 키 없이 기존 이슈에도 같은 접수 규칙을 적용한다.

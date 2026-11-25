@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "issues:next": "node scripts/reporter-issues.mjs",
     "build": "next build",
     "collect": "node --env-file=.env.local --env-file=.env.collectors scripts/collect.mjs",
     "collect:feedle": "node --env-file=.env.local --env-file=.env.collectors scripts/collect.mjs --source=feedle",

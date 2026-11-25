@@ -14,3 +14,5 @@ This file is active only when `AGENTS.md` contains the codex-harness-kit bridge 
 7. Write durable preferences to the memory file and explicit trade-offs to the decisions file.
 8. Final responses must say what changed, what verification ran, and what verification did not run.
 <!-- codex-harness-kit:end -->
+
+닷츠·피클 이슈를 처리할 때는 [이슈 운영 방침](docs/reporter-issues.md)을 함께 적용한다.

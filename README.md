@@ -2,6 +2,8 @@
 
 허용된 공개 매물 페이지를 보수적으로 수집·정규화하고, 사용자가 크레스티드 게코 모프별 현재 최저 **호가**와 실제 매물을 사이트별로 비교하는 로컬 전용 MVP입니다. 사진 AI 판정, 적정가격 예측, 실거래가 서비스가 아닙니다.
 
+닷츠와 피클은 `GnuDaSsa` 계정으로 평소처럼 이슈를 올리면 된다. [GitHub 제보 양식](https://github.com/GnuDaSsa/donawa-gecko-price/issues/new?template=reporter.yml)으로 재현 경로와 완료 기준을 적을 수도 있다. Codex의 검증과 PR 처리 절차는 [이슈 운영 방침](docs/reporter-issues.md)에 있다.
+
 ## 현재 구현
 
 - Supabase PostgreSQL 기반 실데이터 저장소와 타입 생성
